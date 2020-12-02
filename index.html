@@ -7,8 +7,79 @@
     <script src="gapiHandler.js"></script>
     <script src="functions.js"></script>
   </head>
-  <body>
-    <p>Google Calendar API Quickstart</p>
+  <body onload="onPageLoad()">
+
+    <div class="application-container">
+      <!-- This the header of the application -->
+      <div class="header">
+
+
+      </div>
+      <!-- This is where the user selects the view -->
+      <div class="view">
+
+      </div>
+      <div class="content-tridaily-container">
+        <div class="content-tridaily-selection-container">
+          <img class="content-tridaily-selection-member cursor" src="img/left-arrow.png" id="date-selection-left" onclick="dateSelectionLeft()">
+          <div class="content-tridaily-selection-member">
+            <p id="content-tridaily-date-1">
+                <!-- Date 1 is set here by scripts -->
+            </p>
+          </div>
+          <div class="content-tridaily-selection-member">
+            <p id="content-tridaily-date-2">
+                <!-- Date 2 is set here by scripts -->
+            </p>
+          </div>
+          <div class="content-tridaily-selection-member">
+            <p id="content-tridaily-date-3">
+                <!-- Date 3 is set here by scripts -->
+            </p>
+          </div>
+          <img class="content-tridaily-selection-member cursor" src="img/right-arrow.png" id="date-selection-right" onclick="dateSelectionRight()">
+        </div>
+        <div class="content-tridaily">
+          <div class="content-tridaily-member" id="content-tridaily-member-1">
+            <!-- This is what the layout of a generated event looks like ref{updateContentDate()}
+            <div class="event-container">
+              <div class="event-member">
+                5m
+              </div>
+              <div class="event-member">
+                Walk the dog
+              </div>
+              <div class="event-member">
+                11:00
+              </div>
+            </div>
+            -->
+            This is test content 1
+          </div>
+          <div class="content-tridaily-member" id="content-tridaily-member-2">
+            This is test content 2
+          </div>
+          <div class="content-tridaily-member" id="content-tridaily-member-3">
+            This is test content 3
+          </div>
+        </div>
+      </div>
+      <!-- This is the content if calendar_view = false on mobile-->
+      <div class="content-daily">
+        <div class="content-daily-selection">
+
+        </div>
+        <div class="events">
+
+        </div>
+      </div>
+      <!-- -->
+      <!-- This is the content if calender_view = true on mobile -->
+      <div class="content-calendar">
+
+      </div>
+      <!-- -->
+    </div>
 
     <iframe src="https://calendar.google.com/calendar/embed?src=force2finish%40gmail.com&ctz=Europe%2FAmsterdam" style="border: 0" width="800" height="600" frameborder="0" id="calendarFrame" scrolling="no"></iframe>
 
@@ -37,7 +108,7 @@
       </form>
     </div>
 
-    <script type="text/javascript">
+    <script type="text/javascript">   //  This code handles the the log in menu and handles what happens after successful or unsuccessful login.
       // Client ID and API key from the Developer Console
       var CLIENT_ID = '428942640466-t8p8r35g3cf10i9lkol1l0tic3sulahi.apps.googleusercontent.com';
       var API_KEY = 'AIzaSyA9yYBGZQ292Zz9AN1z1DW7DYm_loanstY';
@@ -90,8 +161,8 @@
       function updateSigninStatus(isSignedIn) {
         if (isSignedIn) {
           authorizeButton.style.display = 'none';
-          signoutButton.style.display = 'block';
-          listUpcomingEvents();
+          signoutButton.style.display = 'block';             
+          onSignIn();
         } else {
           authorizeButton.style.display = 'block';
           signoutButton.style.display = 'none';
@@ -123,39 +194,6 @@
         var textContent = document.createTextNode(message + '\n');
         pre.appendChild(textContent);
       }
-
-      /**
-       * Print the summary and start datetime/date of the next ten events in
-       * the authorized user's calendar. If no events are found an
-       * appropriate message is printed.
-       */
-      function listUpcomingEvents() {
-        gapi.client.calendar.events.list({
-          'calendarId': 'primary',
-          'timeMin': (new Date()).toISOString(),
-          'showDeleted': false,
-          'singleEvents': true,
-          'maxResults': 10,
-          'orderBy': 'startTime'
-        }).then(function(response) {
-          var events = response.result.items;
-          appendPre('Upcoming events:');
-
-          if (events.length > 0) {
-            for (i = 0; i < events.length; i++) {
-              var event = events[i];
-              var when = event.start.dateTime;
-              if (!when) {
-                when = event.start.date;
-              }
-              appendPre(event.summary + ' (' + when + ')')
-            }
-          } else {
-            appendPre('No upcoming events found.');
-          }
-        });
-      }
-
     </script>
 
     <script async defer src="https://apis.google.com/js/api.js"

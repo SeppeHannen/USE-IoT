@@ -4,16 +4,18 @@
     <title>USE IoT WebApp</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="style.css">
-    <script src="gapiHandler.js"></script>
-    <script src="functions.js"></script>
+    <script src="js/gapiHandler.js"></script>
+    <script src="js/functions.js"></script>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Langar&family=Nunito:wght@200&family=Ubuntu&display=swap&family=Bitter&display=swap" rel="stylesheet">
   </head>
   <body onload="onPageLoad()">
 
-    <div class="application-container">
+    <div class="application-container" id="application-container">
       <!-- This the header of the application -->
       <div class="header">
-
-
+        <h1>Flora</h1>
+        <input type="textarea" placeholder="Search..">
       </div>
       <!-- This is where the user selects the view -->
       <div class="view">
@@ -23,16 +25,25 @@
         <div class="content-tridaily-selection-container">
           <img class="content-tridaily-selection-member cursor" src="img/left-arrow.png" id="date-selection-left" onclick="dateSelectionLeft()">
           <div class="content-tridaily-selection-member">
+            <p id="content-tridaily-day-1">
+                <!-- Day 1 is set here by scripts -->
+            </p>
             <p id="content-tridaily-date-1">
                 <!-- Date 1 is set here by scripts -->
             </p>
           </div>
           <div class="content-tridaily-selection-member">
+            <p id="content-tridaily-day-2">
+                <!-- Day 2 is set here by scripts -->
+            </p>
             <p id="content-tridaily-date-2">
                 <!-- Date 2 is set here by scripts -->
             </p>
           </div>
           <div class="content-tridaily-selection-member">
+            <p id="content-tridaily-day-3">
+                <!-- Day 3 is set here by scripts -->
+            </p>
             <p id="content-tridaily-date-3">
                 <!-- Date 3 is set here by scripts -->
             </p>
@@ -54,13 +65,10 @@
               </div>
             </div>
             -->
-            This is test content 1
           </div>
           <div class="content-tridaily-member" id="content-tridaily-member-2">
-            This is test content 2
           </div>
           <div class="content-tridaily-member" id="content-tridaily-member-3">
-            This is test content 3
           </div>
         </div>
       </div>
@@ -74,39 +82,52 @@
         </div>
       </div>
       <!-- -->
+
       <!-- This is the content if calender_view = true on mobile -->
       <div class="content-calendar">
-
       </div>
       <!-- -->
+    
+      <!-- Absolutely styled -->
+      <button class="absolute-bottom-right add-event-icon" id="openEventFormButton" onclick="OpenAddEventForm()"><p>+</p></button>
+      <!-- -->
+
+      <!-- Add Event Pop-up -->
+      <div class="add-event-popup" id="EventForm">
+        <form action="/action_page.php" class="form-container">
+          <h1>Create new event</h1>
+      
+          <!-- <label for="name"><b>Name</b></label> -->
+          <div class="form" contenteditable type="textarea" data-text="Event name.." name="name" id="add_event_name" required></div>  
+
+          <!-- <label for="description"><b>Description</b></label> -->
+          <div class="form" contenteditable type="textarea" data-text="Description.." name="description" id="add_event_description" required></div>  
+      
+          <!-- <label for="date"><b>Date</b></label> -->
+          <input type="date" name="date" id="add_event_date" required>     
+          
+          <input type="time" name="time" min="00:00" max="23:59" id="add_event_time" required>
+      
+          <button type="button" class="btn submit" id="sumbit_even_form_button" onclick="addEventPressed()">Add Event</button>
+          <button type="button" class="btn cancel" id="close_event_form_button" onclick="closeAddEventForm()">Close</button>
+        </form>
+      </div>
+      <!-- End Add Event Pop-up -->
+
+    <!-- End Application -->
     </div>
 
-    <iframe src="https://calendar.google.com/calendar/embed?src=force2finish%40gmail.com&ctz=Europe%2FAmsterdam" style="border: 0" width="800" height="600" frameborder="0" id="calendarFrame" scrolling="no"></iframe>
-
-    <!--Add buttons to initiate auth sequence and sign out-->
-    <button id="authorize_button" style="display: none;">Log In</button>
-    <button id="signout_button" style="display: none;">Sign Out</button>
-    <button id="openEventFormButton" onclick="OpenAddEventForm()">Add Event</button>
-
-    <div id="upcoming_events" style="display: none">The following events are upcoming:</div>
-
-    <div class="form-popup" id="EventForm">
-      <form action="/action_page.php" class="form-container">
-        <h1>Create new event</h1>
-    
-        <label for="name"><b>Name</b></label>
-        <input type="text" placeholder="Enter Name" name="name" id="add_event_name" required>
-    
-        <label for="date"><b>Date</b></label>
-        <input type="date" placeholder="Start of event" name="date" id="add_event_date" required>
-
-        <label for="description"><b>Description</b></label>
-        <input type="text" placeholder="Description" name="description" id="add_event_description" required>        
-    
-        <button type="button" class="btn submit" id="sumbit_even_form_button" onclick="addEventPressed()">Add Event</button>
-        <button type="button" class="btn cancel" id="close_event_form_button" onclick="closeAddEventForm()">Close</button>
-      </form>
+    <!-- Login Screen -->
+    <div class="login-container" id="login-container">
+      <!--Add buttons to initiate auth sequence and sign out-->
+      <h1>Flora</h1>
+      <h2>Log in using your gmail account:</h2>
+      <button id="authorize_button" style="display: none;">Log In</button>
+      <button id="signout_button" style="display: none;">Sign Out</button>
+    <!-- End Login Screen -->
     </div>
+
+    <!-- <div id="upcoming_events" style="display: none">The following events are upcoming:</div> -->
 
     <script type="text/javascript">   //  This code handles the the log in menu and handles what happens after successful or unsuccessful login.
       // Client ID and API key from the Developer Console
@@ -181,18 +202,6 @@
        */
       function handleSignoutClick(event) {
         gapi.auth2.getAuthInstance().signOut();
-      }
-
-      /**
-       * Append a pre element to the body containing the given message
-       * as its text node. Used to display the results of the API call.
-       *
-       * @param {string} message Text to be placed in pre element.
-       */
-      function appendPre(message) {
-        var pre = document.getElementById('upcoming_events');
-        var textContent = document.createTextNode(message + '\n');
-        pre.appendChild(textContent);
       }
     </script>
 

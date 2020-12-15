@@ -1,14 +1,25 @@
+@font-feature-values{
+    font-family: 'Langar', cursive;
+    font-family: 'Nunito', sans-serif;
+    font-family: 'Ubuntu', sans-serif;
+    font-family: 'Bitter', serif;
+}
+
+
 label {
     display: block;
     font: 1rem 'Fira Sans', sans-serif;
 }
 
 input,label {
-    margin: .4rem 0;
-}
-
-div.form-popup {
-    display: none;
+    margin: 10px;
+    padding: 6px;
+    border-radius: 10px;
+    border-color: #4b4b4b;
+    border-left: 0px;
+    border-top: 0px;
+    border-right: 0px;
+    border-width: 2px;
 }
 
 body {
@@ -16,6 +27,7 @@ body {
     padding: 0px;
     width: 100vw;
     height: 100vh;
+    /*overflow: hidden; Undo this when we go live */
 }
 
 iframe {
@@ -32,14 +44,39 @@ img.cursor {
     cursor: pointer;
 }
 
+
+/* Globab Styles */
+.absolute-bottom-right {
+    position: absolute;
+    right: 50px;
+    bottom: 50px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50px;
+    border: none;
+    background-color: #2bff28;
+}
+
+.add-event-icon p {
+    position: relative;
+    font-size: 55px;
+    color: white;
+    transform: translateY(-10%);
+}
+
+[contentEditable]:empty:before{
+    content:attr(data-text)
+}
+
+/* End Global Styles */
+
 /* Application Style */
 
 div.application-container {
     position: relative;
-    left: 20%;
-    width: 60%;
+    width: 100%;
     height: 100%;
-    border: 1px solid black;
+    display: none;                 /* Before logging in this is hidden */
 }
 
 div.header {
@@ -48,6 +85,29 @@ div.header {
     height: 100px;
     border: 1px solid red;
 }
+    /* Header Styling */
+    div.header h1 {
+        font-family: 'Langar';
+        position: relative;
+        top: 50%;
+        transform: translateY(-50%);
+        padding: 25px;
+        margin: 0;
+        display: inline-block;
+        color: white;
+        font-size: 40px;
+    }
+
+    div.header input {
+        position: relative;
+        display: inline-block;
+        left: 100%;
+        transform: translate(-200%, -25%);
+        padding: 8px;
+        margin: 0;
+        height: 25px;
+    }
+    /* End Header Styling */
 
 div.content-daily {
     display: none;                  /* Hide by default */
@@ -61,7 +121,7 @@ div.content-daily {
 div.content-tridaily-container {
     position: relative;
     width: 100%;
-    height: 100%;
+    height: calc(100% - 100px);
 }
 div.content-tridaily {
     display: flex;                  
@@ -79,7 +139,7 @@ div.content-tridaily-member {
     flex-basis: 100px;                          /* This makes sure the flex-grow calculation is done equally */
     align-items: flex-start;             
     position: relative;
-    height: auto;
+    height: calc(100% - 100px);
     min-height: 300px; 
 }
 
@@ -94,6 +154,7 @@ div.content-tridaily-selection-container {
     transform: translateX(-50%);
     height: 100px;
     width: 100%;
+    color: white;
 }
 
 div.content-tridaily-selection-member {
@@ -104,11 +165,13 @@ div.content-tridaily-selection-member {
 
 div.content-tridaily-container p {
     text-align: center;
-    height: 100%;
-    line-height: 60px;
+    font-family: 'Bitter', serif;
+    height: 50%;
+    line-height: 30px;
 }
 
 div.content-tridaily-container img {
+    filter: invert(1);
     width: 50px;
     height: 50px;
 }
@@ -119,6 +182,45 @@ div.content-tridaily-container img {
         height: 75px;
         border: 1px solid red;
     }
+    /* End Event Styling */
+
+    /* Event Pop-up Styling */
+    div.add-event-popup {
+        position: relative;
+        width: 100%;
+        padding: 25px 25px 25px 25px;
+        box-sizing: border-box;
+        transition: 500ms;
+        transition-timing-function: ease-in-out;
+    }
+
+    div.add-event-popup h1 {
+        font-family: 'Nunito', sans-serif;
+        color: white;
+        margin: 0;
+    }
+
+    div.add-event-popup div.form {
+        position: relative;
+        font-family: 'Nunito', sans-serif;
+        padding: 10px;
+        width: calc(100% - 50px);
+        color: white;
+    }
+
+    div.add-event-popup div.form:focus {
+        outline: 0;
+    }
+
+    div.add-event-popup div.form div{
+        font-family: 'Nunito', sans-serif;
+    }
+
+
+
+    /* End Event Pop-up Styling */
+
+
 /* End Content Tridaily */
 
 div.content-calendar {
@@ -129,3 +231,56 @@ div.content-calendar {
 }
 
 /* End Application Style */
+
+
+/* Login Screen Styling */
+
+body {
+    background-color: #151515;
+}
+
+div.login-container {
+    position: absolute;
+    max-width: 350px;
+    max-height: 350px;
+    width: 100%;
+    height: 100%;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    border-radius: 15px;
+}
+
+div.login-container h1 {
+    font-family: 'Langar', cursive;
+    font-size: 50px;
+    color: #2a85ff;
+    margin: 0;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    text-align: center;
+}
+
+div.login-container h2 {
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 20px;
+    color: #151515;
+    margin: 0;
+    padding-left: 20px;
+    padding-right: 20px;
+    text-align: left;
+}
+
+div.login-container button {
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 15px;
+    position: relative;
+    cursor: pointer;
+    margin-top: 15px;
+    left: 10%;
+    width: 80%;
+    height: 40px;
+}
+
+/* End Login Screen Styling */

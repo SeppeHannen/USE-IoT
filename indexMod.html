@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>USE IoT WebApp</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="style.css">
+    <script src="js/gapiHandler.js"></script>
+    <script src="js/functions.js"></script>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Langar&family=Nunito:wght@200&family=Ubuntu&display=swap&family=Bitter&display=swap" rel="stylesheet">
+  </head>
+  <body onload="onPageLoad()">
+
+    <div class="application-container" id="application-container">
+      <!-- This the header of the application -->
+      <div class="header">
+        <h1>Flora</h1>
+        <input type="textarea" placeholder="Search..">
+      </div>
+      <!-- This is where the user selects the view -->
+      <div class="view">
+
+      <!-- Horizontal Line (Seperator)-->
+      <hr style="background-color: white;">
+
+      </div>
+      <div class="content-tridaily-container">
+        <div class="content-tridaily-selection-container">
+          <img class="content-tridaily-selection-member cursor" src="img/left-arrow.png" id="date-selection-left" onclick="dateSelectionLeft()">
+          <div class="content-tridaily-selection-member">
+            <p id="content-tridaily-day-1">
+                <!-- Day 1 is set here by scripts -->
+            </p>
+            <p id="content-tridaily-date-1">
+                <!-- Date 1 is set here by scripts -->
+            </p>
+          </div>
+          <div class="content-tridaily-selection-member">
+            <p id="content-tridaily-day-2">
+                <!-- Day 2 is set here by scripts -->
+            </p>
+            <p id="content-tridaily-date-2">
+                <!-- Date 2 is set here by scripts -->
+            </p>
+          </div>
+          <div class="content-tridaily-selection-member">
+            <p id="content-tridaily-day-3">
+                <!-- Day 3 is set here by scripts -->
+            </p>
+            <p id="content-tridaily-date-3">
+                <!-- Date 3 is set here by scripts -->
+            </p>
+          </div>
+          <img class="content-tridaily-selection-member cursor" src="img/right-arrow.png" id="date-selection-right" onclick="dateSelectionRight()">
+        </div>
+
+        <!-- Horizontal Line (Seperator)-->
+        <hr style="background-color: white;">
+
+        <div class="content-tridaily">
+          <div class="content-tridaily-member" id="content-tridaily-member-1">
+            <!-- This is what the layout of a generated event looks like ref{updateContentDate()}
+            <div class="event-container">
+              <div class="event-member">
+                5m
+              </div>
+              <div class="event-member">
+                Walk the dog
+              </div>
+              <div class="event-member">
+                11:00
+              </div>
+            </div>
+            -->
+          </div>
+          <div class="content-tridaily-member" id="content-tridaily-member-2">
+          </div>
+          <div class="content-tridaily-member" id="content-tridaily-member-3">
+          </div>
+        </div>
+      </div>
+      <!-- This is the content if calendar_view = false on mobile-->
+      <div class="content-daily">
+        <div class="content-daily-selection">
+
+        </div>
+        <div class="events">
+
+        </div>
+      </div>
+      <!-- -->
+
+      <!-- This is the content if calender_view = true on mobile -->
+      <div class="content-calendar">
+      </div>
+      <!-- -->
+    
+      <!-- Absolutely styled -->
+      <button class="absolute-bottom-right add-event-icon" id="openEventFormButton" onclick="OpenAddEventForm()"><p>+</p></button>
+      <!-- -->
+
+      <!-- Add Event Pop-up -->
+      <div class="add-event-popup" id="EventForm">
+        <form action="/action_page.php" class="form-container">
+          <h1>Create new event</h1>
+      
+          <!-- <label for="name"><b>Name</b></label> -->
+          <div class="form" contenteditable type="textarea" data-text="Event name.." name="name" id="add_event_name" required></div>  
+
+          <!-- <label for="description"><b>Description</b></label> -->
+          <div class="form" contenteditable type="textarea" data-text="Description.." name="description" id="add_event_description" required></div>  
+      
+          <!-- <label for="date"><b>Date</b></label> -->
+          <input type="date" name="date" id="add_event_date" required>     
+          
+          <input type="time" name="time" min="00:00" max="23:59" id="add_event_time" required>
+		  
+		 
+		  <select name="set_reminder"id="set_reminder">
+		    <!--Set reminder time-->
+		    <option>5</option>
+			<option>10</option>
+			<option>15</option>
+			<option>20</option>
+			<option>30</option>
+			<option>45</option>
+			<option>60</option>
+		  </select>
+          <button type="button" class="btn submit" id="sumbit_even_form_button" onclick="addEventPressed()">Add Event</button>
+          <button type="button" class="btn cancel" id="close_event_form_button" onclick="closeAddEventForm()">Close</button>
+        </form>
+      </div>
+      <!-- End Add Event Pop-up -->
+
+    <!-- End Application -->
+    </div>
+
+    <!-- Login Screen -->
+    <div class="login-container" id="login-container">
+      <!--Add buttons to initiate auth sequence and sign out-->
+      <h1>Flora</h1>
+      <h2>Log in using your gmail account:</h2>
+      <button id="authorize_button" style="display: none;">Log In</button>
+      <button id="signout_button" style="display: none;">Sign Out</button>
+    <!-- End Login Screen -->
+    </div>
+
+    <!-- <div id="upcoming_events" style="display: none">The following events are upcoming:</div> -->
+
+    <script type="text/javascript">   //  This code handles the the log in menu and handles what happens after successful or unsuccessful login.
+      // Client ID and API key from the Developer Console
+      var CLIENT_ID = '428942640466-t8p8r35g3cf10i9lkol1l0tic3sulahi.apps.googleusercontent.com';
+      var API_KEY = 'AIzaSyA9yYBGZQ292Zz9AN1z1DW7DYm_loanstY';
+
+      // Array of API discovery doc URLs for APIs used by the quickstart
+      var DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"];
+
+      // Authorization scopes required by the API; multiple scopes can be
+      // included, separated by spaces.
+      var SCOPES = "https://www.googleapis.com/auth/calendar";
+
+      var authorizeButton = document.getElementById('authorize_button');
+      var signoutButton = document.getElementById('signout_button');
+
+
+      /**
+       *  On load, called to load the auth2 library and API client library.
+       */
+      function handleClientLoad() {
+        gapi.load('client:auth2', initClient);
+      }
+
+      /**
+       *  Initializes the API client library and sets up sign-in state
+       *  listeners.
+       */
+      function initClient() {
+        gapi.client.init({
+          apiKey: API_KEY,
+          clientId: CLIENT_ID,
+          discoveryDocs: DISCOVERY_DOCS,
+          scope: SCOPES
+        }).then(function () {
+          // Listen for sign-in state changes.
+          gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
+
+          // Handle the initial sign-in state.
+          updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
+          authorizeButton.onclick = handleAuthClick;
+          signoutButton.onclick = handleSignoutClick;
+        }, function(error) {
+          appendPre(JSON.stringify(error, null, 2));
+        });
+      }
+
+      /**
+       *  Called when the signed in status changes, to update the UI
+       *  appropriately. After a sign-in, the API is called.
+       */
+      function updateSigninStatus(isSignedIn) {
+        if (isSignedIn) {
+          authorizeButton.style.display = 'none';
+          signoutButton.style.display = 'block';             
+          onSignIn();
+        } else {
+          authorizeButton.style.display = 'block';
+          signoutButton.style.display = 'none';
+        }
+      }
+
+      /**
+       *  Sign in the user upon button click.
+       */
+      function handleAuthClick(event) {
+        gapi.auth2.getAuthInstance().signIn();
+      }
+
+      /**
+       *  Sign out the user upon button click.
+       */
+      function handleSignoutClick(event) {
+        gapi.auth2.getAuthInstance().signOut();
+      }
+    </script>
+
+    <script async defer src="https://apis.google.com/js/api.js"
+      onload="this.onload=function(){};handleClientLoad()"
+      onreadystatechange="if (this.readyState === 'complete') this.onload()">
+    </script>
+  </body>
+</html>

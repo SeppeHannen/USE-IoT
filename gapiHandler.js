@@ -5,8 +5,14 @@
  * @param {String} description 
  * @param {String} dateTimeStart 
  * @param {String} dateTimeEnd 
+ * @param {int} reminderMins
  */
 function addEvent(name, location, description, dateTimeStart, dateTimeEnd,reminderMins) {
+    if (reminderMins==0){
+		var remindOverride=[];
+	}else{
+		var remindOverride=[{'method': 'popup', 'minutes': reminderMins}];
+	}
     var event = {
         'summary': name,
         'location': location,
@@ -28,10 +34,7 @@ function addEvent(name, location, description, dateTimeStart, dateTimeEnd,remind
         ],
         'reminders': {
           'useDefault': false,
-          'overrides': [
-          //  {'method': 'email', 'minutes': 24 * 60},
-            {'method': 'popup', 'minutes': reminderMins}
-          ]
+          'overrides':remindOverride
         }
       };
 

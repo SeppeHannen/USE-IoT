@@ -44,6 +44,9 @@ img.cursor {
     cursor: pointer;
 }
 
+hr {
+    margin: 0;
+}
 
 /* Globab Styles */
 .absolute-bottom-right {
@@ -83,7 +86,6 @@ div.header {
     position: relative;
     width: 100%;
     height: 100px;
-    border: 1px solid red;
 }
     /* Header Styling */
     div.header h1 {
@@ -128,7 +130,7 @@ div.content-tridaily {
     flex-direction: row;
     position: relative;
     width: 100%;
-    height: auto;
+    height: calc(100% - 100px);
     min-height: 300px;
 }
 
@@ -139,7 +141,10 @@ div.content-tridaily-member {
     flex-basis: 100px;                          /* This makes sure the flex-grow calculation is done equally */
     align-items: flex-start;             
     position: relative;
-    height: calc(100% - 100px);
+    height: calc(100% - 25px);
+    padding-top: 25px;
+    overflow-y: hidden;                         /* Might want to be changed to scroll at some point */
+    overflow-x: hidden;
     min-height: 300px; 
 }
 
@@ -178,10 +183,61 @@ div.content-tridaily-container img {
     /* Event Styling */
     div.event-container {
         position: relative;
-        width: 100%;
-        height: 75px;
-        border: 1px solid red;
+        display: flex;
+        flex-direction: row;
+        box-sizing: border-box;
+        height: 70px;
+        left: 5%;
+        width: 90%;
+        padding: 20px 10px 20px 10px;
+        border: 1px solid white;
+        border-radius: 15px;
+        cursor: pointer;    
+        line-height: 30px;
     }
+
+    div.event-container .event-member {
+        flex-grow: 1;
+        height: 30px;
+        font-size: 20px;
+        color: white;
+    }
+
+        /* Reminder Styling */
+        div.event-container .reminder {
+            text-align: center;
+            white-space: nowrap;
+        }
+
+
+        div.event-container img.reminder {
+            height: 20px;
+            width: 20px;
+            display: inline-block;
+        }
+
+        div.event-container p.reminder {
+            display: inline-block;
+        }
+        /* End Reminder Styling */
+
+        /* Name Styling */
+        div.event-container .name {
+            text-align: center;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+        /*End Name Styling */
+
+        /* Time Styling */
+        div.event-container .time {
+            text-align: right;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        /* End Time Styling */
+
     /* End Event Styling */
 
     /* Event Pop-up Styling */

@@ -89,24 +89,44 @@ function addEventPressed() {
 function updateContentDate(events, member) {
   removeAllChildNodes(document.getElementById("content-tridaily-member-" + member));
   for (i=0; i < events.length; i++) { // For every event on {date}:
-    var event_container = document.createElement("div");    //Container of the event
+    //Container of the event
+    var event_container = document.createElement("div");
     event_container.className = "event-container";
-    var event_reminder = document.createElement("div");     //Reminder section of the event
-    event_reminder.className = "event-member";
-    var event_title = document.createElement("div");        //Title section of the event
-    event_title.className = "event-member";
-    var event_time = document.createElement("div");         //Time section of the event
-    event_time.className = "event-member";
-    event_time.style.textOverflow = "ellipsis";
-    event_reminder.innerHTML += "5m";
-    event_title.innerHTML += events[i].summary;             //Add the title from the event
-    event_time.innerHTML += events[i].start.dateTime;
-    event_container.appendChild(event_reminder);            //Append all the inner divs to the container
+
+    //Take care of the name section
+    var event_title = document.createElement("div");    
+    event_title.className = "event-member name";
+    event_title.innerHTML += events[i].summary;
+
+    //Take care of the (starting) time section
+    var event_time = document.createElement("div");
+    event_time.className = "event-member time";
+    var dateTime = events[i].start.dateTime;
+    event_time.innerHTML += dateTime.split("T")[1].substring(0,5) + " - " + addTimes(dateTime.split("T")[1].substring(0,5), dateTime.split("T")[1].slice(dateTime.split("T")[1].length - 5));
+    
+    //Take care of the reminder section.
+    var event_reminder = document.createElement("div");
+    event_reminder.className = "event-member reminder";
+    var reminder_img = document.createElement("img");
+    reminder_img.src = "img/reminder.png";
+    reminder_img.className = "reminder";
+    event_reminder.appendChild(reminder_img);    
+    var reminder_paragraph = document.createElement("p");
+    reminder_paragraph.className = "reminder";
+    if (true) {
+      reminder_paragraph.innerHTML += "5m"
+    } else {
+      reminder_paragraph.innerHTML += "5m"
+    }
+    event_reminder.appendChild(reminder_paragraph);
+    
+    //Append all the sections to the container
+    event_container.appendChild(event_reminder);           
     event_container.appendChild(event_title);
     event_container.appendChild(event_time);
-    document.getElementById("content-tridaily-member-" + member).appendChild(event_container); //Append the container to the right content-tridaily-member div.
+    //Append the container to the right content-tridaily-member div.
+    document.getElementById("content-tridaily-member-" + member).appendChild(event_container);
   }
-  console.log("The event content for member " + member + " was reloaded!")
 }
 
 /* Date logic starts here */
@@ -227,5 +247,37 @@ function removeAllChildNodes(parent) {
   }
 }
 
+
+/**
+ * Takes a 24h time and adds hour amount of hours.
+ * @param {string} time   "ab:cd"
+ * @param {int} hour       x
+ * @return {newTime}      time + hour
+ */
+function addHourToTime(time, hour) {
+  var newTime = ((parseInt(time.split(":")[0]) + hour) % 24).toString();
+  newTime = newTime + ":" + time.split(":")[1];
+  return newTime;
+}
+
+// Convert a time in hh:mm format to minutes
+function timeToMins(time) {
+  var b = time.split(':');
+  return b[0]*60 + +b[1];
+}
+
+// Convert minutes to a time in format hh:mm
+// Returned value is in range 00  to 24 hrs
+function timeFromMins(mins) {
+  function z(n){return (n<10? '0':'') + n;}
+  var h = (mins/60 |0) % 24;
+  var m = mins % 60;
+  return z(h) + ':' + z(m);
+}
+
+// Add two times in hh:mm format
+function addTimes(t0, t1) {
+  return timeFromMins(timeToMins(t0) + timeToMins(t1));
+}
 
   

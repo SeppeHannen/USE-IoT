@@ -23,7 +23,7 @@ function addEvent(name, location, description, dateTimeStart, dateTimeEnd) {
         //  'RRULE:FREQ=DAILY;COUNT=2'
         //],
         'attendees': [
-          {'email': 'force2finish@gmail.com'},
+          //{'email': 'force2finish@gmail.com'},
           //{'email': 'sbrin@example.com'}
         ],
         'reminders': {

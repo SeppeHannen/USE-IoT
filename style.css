@@ -255,7 +255,14 @@ div.content-tridaily-container img {
         color: white;
         margin: 0;
     }
-
+    div.add-event-popup p {
+		font-family: 'Nunito', sans-serif;
+        color: white;
+        margin: 0;
+		margin-right: 5px;
+		display:inline-block;
+		vertical-align:center;
+	}
     div.add-event-popup div.form {
         position: relative;
         font-family: 'Nunito', sans-serif;

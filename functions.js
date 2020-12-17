@@ -117,7 +117,7 @@ function updateContentDate(events, member) {
 	//Take care of reminder time
 	
     if (true) {
-      reminder_paragraph.innerHTML += "5m"
+      reminder_paragraph.innerHTML += events[i].reminders.overrides[0].minutes + "m";
     } else {
       reminder_paragraph.innerHTML += "5m"
     }

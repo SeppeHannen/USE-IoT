@@ -6,6 +6,7 @@ var date1 = new Date(date2);            //First date - intialized with yesterday
 var date3 = new Date(date2);            //Last date - intialized with tomorrow
 date1.setDate(date2.getDate() - 1);
 date3.setDate(date2.getDate() + 1);
+var isEventBeingEdited = false;
 
 /**
  *  What to do when the page is loaded.
@@ -38,47 +39,56 @@ function OpenAddEventForm() {
  *  On close_event__form_button click, open the add event form.
  */
 function closeAddEventForm() {
+  //Empty the form for the next use.
+  document.getElementById("add_event_name").innerHTML = null;
+  document.getElementById("add_event_description").innerHTML = null;
+  document.getElementById("add_event_date").value = null;
+  document.getElementById("add_event_startTime").value = null;
+  document.getElementById("add_event_endTime").value = null;
   document.getElementById("EventForm").style.transform = "translateY(0)";
-  updateEventContent();
+  setTimeout(updateEventContent(), 300);
 }
 
 /**
  *  When the add event button is pressed, gather the data and create the event.
  */
 function addEventPressed() {
+  document.getElementById("add_event_form_error").innerHTML = "";
   var name = document.getElementById("add_event_name").innerHTML;
   var dateTimeStart = document.getElementById("add_event_date").value;  //Format: 18-12-2020T12:00:00Z
   var dateTimeEnd;
   var location = "unknown";
   var description = document.getElementById("add_event_description").innerHTML;
-  var time = document.getElementById("add_event_time").value;
-  var endTime = time;
-  if (time != null) {//Time was set
-    if (time.split(":")[0] == "23") {//If the hour is 23
-      endTime = "00:" + time.split(":")[1];
-      dateTimeEnd = new Date((new Date(dateTimeStart)).setDate((new Date(dateTimeStart)).getDate() + 1)).toLocaleDateString() + "T" + endTime + ":00Z";;
-      dateTimeStart = dateTimeStart + "T" + time +":00Z";
-    } else {//If the hour is not 23
-      endTime = (parseInt(time.split(":")[0]) + 1).toString() + ":" + time.split(":")[1];
-      dateTimeEnd = dateTimeStart + "T" + endTime + ":00Z";
-      dateTimeStart = dateTimeStart + "T" + time +":00Z";
-    }
-  } else {//Time was not set
-    arrayDates = wholeDayPair(dateTimeStart);
-    dateTimeEnd = arrayDates[1];
-    dateTimeStart = arrayDates[0];
+  var startTime = document.getElementById("add_event_startTime").value;
+  var endTime = document.getElementById("add_event_endTime").value;
+  var allDay = document.getElementById("add_event_all_day").checked;
+
+  if (name == null || location == null || dateTimeStart == null) {//Check if the input is valid
+    document.getElementById("add_event_form_error").innerHTML = "Please make sure to enter all required values!";
+    throw 'Some parameters in addEvent() were null!';
   }
 
-  if (name == null || location == null || dateTimeStart == null || dateTimeEnd == null) {//Check if the input is valid
-    throw 'Some parameters in addEvent() were null!';
-  } else {
-    if (description == null) {//If description is null, assign it the empty string.
-      description = "";
-    }
-    console.log(name, location, description, dateTimeStart, dateTimeEnd);
-    addEvent(name, location, description, dateTimeStart, dateTimeEnd);
-    closeAddEventForm();
+  if (allDay) {//Event was made for whole day
+    var arrayDates = wholeDayPair(dateTimeStart)
+    dateTimeEnd = arrayDates[1];
+    dateTimeStart = arrayDates[0];
+  } else if (startTime == null || endTime == null) {//Event was not made for whole day and times were not entered
+    document.getElementById("add_event_form_error").innerHTML = "The time was not entered!";
+    throw 'The time was not entered!';
+  } else {//Event was made not made for whole day and times were entered
+    console.log(startTime);
+    dateTimeEnd = dateTimeStart + "T" + endTime + ":00+01:00";
+    dateTimeStart = dateTimeStart + "T" + startTime + ":00+01:00";
+    console.log(dateTimeStart, dateTimeEnd);
   }
+
+  if (description == null) {//If description is null, assign it the empty string.
+    description = "This event was not given a description at creation.";
+  }
+
+  console.log(name, location, description, dateTimeStart, dateTimeEnd);
+  addEvent(name, location, description, dateTimeStart, dateTimeEnd);
+  closeAddEventForm();
 }
 
 /**
@@ -87,22 +97,30 @@ function addEventPressed() {
  * @param {int} member The member which corresponds to the date of {events}
  */
 function updateContentDate(events, member) {
+  //Remove all existing event containers
   removeAllChildNodes(document.getElementById("content-tridaily-member-" + member));
-  for (i=0; i < events.length; i++) { // For every event on {date}:
-    //Container of the event
+
+  for (i=0; i < events.length; i++) {// For every event on {date}:
+    //Create the container of the event
     var event_container = document.createElement("div");
     event_container.className = "event-container";
+    var event = events[i];
+    event_container.addEventListener("click", function() {onEventClick(event)});
 
     //Take care of the name section
     var event_title = document.createElement("div");    
     event_title.className = "event-member name";
     event_title.innerHTML += events[i].summary;
 
+    //Add a description section with data, but keep it invisible
+    //var event_description = d
+
     //Take care of the (starting) time section
     var event_time = document.createElement("div");
     event_time.className = "event-member time";
-    var dateTime = events[i].start.dateTime;
-    event_time.innerHTML += dateTime.split("T")[1].substring(0,5) + " - " + addTimes(dateTime.split("T")[1].substring(0,5), dateTime.split("T")[1].slice(dateTime.split("T")[1].length - 5));
+    var dateTimeStart = events[i].start.dateTime;
+    var dateTimeEnd = events[i].end.dateTime;
+    event_time.innerHTML += dateTimeStart.split("T")[1].substring(0,5) + " - " + dateTimeEnd.split("T")[1].substring(0,5) 
     
     //Take care of the reminder section.
     var event_reminder = document.createElement("div");
@@ -124,9 +142,18 @@ function updateContentDate(events, member) {
     event_container.appendChild(event_reminder);           
     event_container.appendChild(event_title);
     event_container.appendChild(event_time);
+
     //Append the container to the right content-tridaily-member div.
     document.getElementById("content-tridaily-member-" + member).appendChild(event_container);
   }
+
+  //Make all the events fade in at the same time by setting their opacity to 1.
+  setTimeout(function() {
+    var elements = document.getElementsByClassName("event-container");
+    for (i = 0; i < elements.length; i++) {
+      elements[i].style.opacity = "1";
+    }
+  }, 50);
 }
 
 /* Date logic starts here */
@@ -278,6 +305,84 @@ function timeFromMins(mins) {
 // Add two times in hh:mm format
 function addTimes(t0, t1) {
   return timeFromMins(timeToMins(t0) + timeToMins(t1));
+}
+
+/**
+ * Opens a popup which displays the event data and allows the user to edit or remove the event.
+ * @param {event} event
+ */
+function onEventClick(event) {
+    if (isEventBeingEdited) {//The user clicked another event while editing so close the popup.
+      removeAllByClassName("elaborate-event-container");
+      isEventBeingEdited = false;
+    } else {//No other event is being edited so create a new popup.
+      isEventBeingEdited = true;
+
+      //Create the container of the elaboration.
+      var elaborate_event_container = document.createElement("div");
+      elaborate_event_container.className = "elaborate-event-container";
+
+      //Create the name of the event container.
+      var elaborate_event_name = document.createElement("div");
+      elaborate_event_name.className = "elaborate-event-title";
+      elaborate_event_name.contentEditable = true;
+      elaborate_event_name.type = "textarea";
+      elaborate_event_name.innerHTML = event.summary;
+
+      //Create the title of the name.
+      var elaborate_event_name_title = document.createElement("h1");
+      elaborate_event_name_title.innerText = "Name:";
+
+      //Create the description of the event container.
+      var elaborate_event_description = document.createElement("div");
+      elaborate_event_description.className = "elaborate-event-description";
+      elaborate_event_description.contentEditable = true;
+      elaborate_event_description.type = "textarea";
+      elaborate_event_description.innerHTML = event.description;
+
+      //Create the title of the description.
+      var elaborate_event_description_title = document.createElement("h1");
+      elaborate_event_description_title.innerText = "Description:";
+
+      //Create the starting time of the event container.
+      var elaborate_event_startTime = document.createElement("input");
+      elaborate_event_startTime.className = "elaborate-event-time";
+      elaborate_event_startTime.type = "date";
+      elaborate_event_startTime.name = "startTime"
+
+      //Create the ending time of the event container.
+      var elaborate_event_endTime = document.createElement("input");
+      elaborate_event_endTime.className = "elaborate-event-time";
+      elaborate_event_endTime.type = "date";
+      elaborate_event_endTime.name = "endTime"
+
+      //Create the closing button.
+      var elaborate_event_closing_button = document.createElement("img");
+      elaborate_event_closing_button.src = "img/close.png";
+      elaborate_event_closing_button.addEventListener("click", function() {removeAllByClassName("elaborate-event-container");isEventBeingEdited = false;});
+      elaborate_event_closing_button.className = "elaborate-event-closing-button";
+
+      //Append everything to the container.
+      elaborate_event_container.appendChild(elaborate_event_name_title);
+      elaborate_event_container.appendChild(elaborate_event_name);
+      elaborate_event_container.appendChild(elaborate_event_description_title);
+      elaborate_event_container.appendChild(elaborate_event_description);
+      elaborate_event_container.appendChild(elaborate_event_startTime);
+      elaborate_event_container.appendChild(elaborate_event_endTime);
+      elaborate_event_container.appendChild(elaborate_event_closing_button);
+
+      //Append to body
+      document.body.appendChild(elaborate_event_container);
+    }
+}
+
+function removeAllByClassName(name) {
+  console.log("test");
+  var toRemove = document.getElementsByClassName(name);
+  for (i = 0; i < toRemove.length; i++) {
+    toRemove[i].remove();
+    console.log(toRemove[i]);
+  }
 }
 
   

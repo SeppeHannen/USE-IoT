@@ -40,7 +40,7 @@ function addEvent(name, location, description, dateTimeStart, dateTimeEnd) {
         'resource': event
       });
 
-      request.execute(function(event) {});
+      request.execute(function(event) {console.log(event)});
 }
 
 /**
@@ -52,9 +52,6 @@ function addEvent(name, location, description, dateTimeStart, dateTimeEnd) {
 function getEventDate(date, member) {
     dateClone = wholeDayPair(date)[0];
     dateClonePlusOne = wholeDayPair(date)[1];
-
-    //datePlusOne = new Date(date);
-    //datePlusOne.setDate(date.getDate() + 1);
     gapi.client.calendar.events.list({
     'calendarId': 'primary',
     'timeMin': (dateClone).toISOString(),
@@ -67,6 +64,7 @@ function getEventDate(date, member) {
   }).then(function(response) {
     var events = response.result.items;
     updateContentDate(events, member);
+    console.log(events);
   })
 }
   

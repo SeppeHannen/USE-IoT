@@ -14,7 +14,7 @@
     <div class="application-container" id="application-container">
       <!-- This the header of the application -->
       <div class="header">
-        <h1>Flora</h1>
+        <h1>Lumos</h1>
         <input type="textarea" placeholder="Search..">
       </div>
       <!-- This is where the user selects the view -->
@@ -113,8 +113,14 @@
           <!-- <label for="date"><b>Date</b></label> -->
           <input type="date" name="date" id="add_event_date" required>     
           
-          <input type="time" name="time" min="00:00" max="23:59" id="add_event_time" required>
+          <input type="time" name="time" min="00:00" max="23:59" id="add_event_startTime" required>
+
+          <input type="time" name="time" min="00:00" max="23:59" id="add_event_endTime" required>
+
+          <input type="checkbox" name="all_day" id="add_event_all_day" required>
       
+          <div id="add_event_form_error"></div>
+
           <button type="button" class="btn submit" id="sumbit_even_form_button" onclick="addEventPressed()">Add Event</button>
           <button type="button" class="btn cancel" id="close_event_form_button" onclick="closeAddEventForm()">Close</button>
         </form>

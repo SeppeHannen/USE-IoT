@@ -25,9 +25,18 @@
 
       </div>
       <div class="content-tridaily-container">
-        <div class="content-tridaily-selection-container">
-          <img class="content-tridaily-selection-member cursor" src="img/left-arrow.png" id="date-selection-left" onclick="dateSelectionLeft()">
-          <div class="content-tridaily-selection-member">
+        <div class="content-tridaily-selection-container" id="content-tridaily-selection-container">
+          <img class="cursor date-selection" style="left: calc(20% + 20px);" src="img/left-arrow.png" id="date-selection-left" onclick="dateSelectionLeft()">
+          <div class="content-tridaily-selection-member" id="content-tridaily-selection-member-0" style="left: 0%;">
+            <p id="content-tridaily-day-0">
+                <!-- Day 1 is set here by scripts -->
+            </p>
+            <p id="content-tridaily-date-0">
+                <!-- Date 1 is set here by scripts -->
+            </p>
+          </div>
+          
+          <div class="content-tridaily-selection-member" id="content-tridaily-selection-member-1" style="left: 20%;">
             <p id="content-tridaily-day-1">
                 <!-- Day 1 is set here by scripts -->
             </p>
@@ -35,7 +44,8 @@
                 <!-- Date 1 is set here by scripts -->
             </p>
           </div>
-          <div class="content-tridaily-selection-member">
+
+          <div class="content-tridaily-selection-member" id="content-tridaily-selection-member-2" style="left: 40%;">
             <p id="content-tridaily-day-2">
                 <!-- Day 2 is set here by scripts -->
             </p>
@@ -43,7 +53,8 @@
                 <!-- Date 2 is set here by scripts -->
             </p>
           </div>
-          <div class="content-tridaily-selection-member">
+
+          <div class="content-tridaily-selection-member" id="content-tridaily-selection-member-3" style="left: 60%;">
             <p id="content-tridaily-day-3">
                 <!-- Day 3 is set here by scripts -->
             </p>
@@ -51,14 +62,26 @@
                 <!-- Date 3 is set here by scripts -->
             </p>
           </div>
-          <img class="content-tridaily-selection-member cursor" src="img/right-arrow.png" id="date-selection-right" onclick="dateSelectionRight()">
+
+          <div class="content-tridaily-selection-member" id="content-tridaily-selection-member-4" style="left: 80%;">
+            <p id="content-tridaily-day-4">
+                <!-- Day 1 is set here by scripts -->
+            </p>
+            <p id="content-tridaily-date-4">
+                <!-- Date 1 is set here by scripts -->
+            </p>
+          </div>
+          <img class="cursor date-selection" style="right: calc(20% + 20px);" src="img/right-arrow.png" id="date-selection-right" onclick="dateSelectionRight()">
         </div>
 
         <!-- Horizontal Line (Seperator)-->
         <hr style="background-color: white;">
 
-        <div class="content-tridaily">
-          <div class="content-tridaily-member" id="content-tridaily-member-1">
+        <div class="content-tridaily-event-container" id="content-tridaily-event-container">
+          <div class="content-tridaily-member" id="content-tridaily-member-0" style="left: 0%">
+          </div>
+
+          <div class="content-tridaily-member" id="content-tridaily-member-1" style="left: 20%">
             <!-- This is what the layout of a generated event looks like ref{updateContentDate()}
             <div class="event-container">
               <div class="event-member">
@@ -73,10 +96,16 @@
             </div>
             -->
           </div>
-          <div class="content-tridaily-member" id="content-tridaily-member-2">
+
+          <div class="content-tridaily-member" id="content-tridaily-member-2" style="left: 40%">
           </div>
-          <div class="content-tridaily-member" id="content-tridaily-member-3">
+
+          <div class="content-tridaily-member" id="content-tridaily-member-3" style="left: 60%">
           </div>
+
+          <div class="content-tridaily-member" id="content-tridaily-member-4" style="left: 80%">
+          </div>
+
         </div>
       </div>
       <!-- This is the content if calendar_view = false on mobile-->

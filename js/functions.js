@@ -3,9 +3,13 @@
  */
 var date2 = new Date();                 //Middle date - initialized with today
 var date1 = new Date(date2);            //First date - intialized with yesterday
-var date3 = new Date(date2);            //Last date - intialized with tomorrow
+var date0 = new Date(date2);            //Zeroth date - intialized with the day before yesterday
+var date3 = new Date(date2);            //Third date - intialized with tomorrow
+var date4 = new Date(date2);            //Fourth date - intialized with the day after tomorrow
 date1.setDate(date2.getDate() - 1);
+date0.setDate(date2.getDate() - 2);
 date3.setDate(date2.getDate() + 1);
+date4.setDate(date2.getDate() + 2);
 var isEventBeingEdited = false;
 
 /**
@@ -19,12 +23,11 @@ function onPageLoad() {
  *  What to do when the user has signed in.
  */
 function onSignIn() {
-  console.log(date1, date2, date3);
   refreshDate();
-  console.log(date1, date2, date3);
-  updateEventContent();
   document.getElementById("login-container").style.display = "none";
   document.getElementById("application-container").style.display = "block";
+  synchronizeApplications();
+  updateEventContent();
 }
 
 /**
@@ -76,17 +79,13 @@ function addEventPressed() {
     document.getElementById("add_event_form_error").innerHTML = "The time was not entered!";
     throw 'The time was not entered!';
   } else {//Event was made not made for whole day and times were entered
-    console.log(startTime);
     dateTimeEnd = dateTimeStart + "T" + endTime + ":00+01:00";
     dateTimeStart = dateTimeStart + "T" + startTime + ":00+01:00";
-    console.log(dateTimeStart, dateTimeEnd);
   }
 
   if (description == null) {//If description is null, assign it the empty string.
     description = "This event was not given a description at creation.";
   }
-
-  console.log(name, location, description, dateTimeStart, dateTimeEnd);
   addEvent(name, location, description, dateTimeStart, dateTimeEnd);
   closeAddEventForm();
 }
@@ -111,9 +110,6 @@ function updateContentDate(events, member) {
     var event_title = document.createElement("div");    
     event_title.className = "event-member name";
     event_title.innerHTML += events[i].summary;
-
-    //Add a description section with data, but keep it invisible
-    //var event_description = d
 
     //Take care of the (starting) time section
     var event_time = document.createElement("div");
@@ -160,67 +156,120 @@ function updateContentDate(events, member) {
 /**
  *  Refresh the date shown
  */
-function refreshDate() {
-  var today = new Date();
-  var todayMinTwo = new Date(today);
-  var todayMinOne = new Date(today);
-  var todayPlusOne = new Date(today);
-  var todayPlusTwo = new Date(today);
-  todayMinTwo.setDate(today.getDate() - 2);
-  todayMinOne.setDate(today.getDate() - 1);
-  todayPlusOne.setDate(today.getDate() + 1);
-  todayPlusTwo.setDate(today.getDate() + 2);
-  if (date2.toLocaleDateString() == today.toLocaleDateString()) { //The middle date is today.
-    document.getElementById("content-tridaily-date-1").textContent = "Yesterday";
-    document.getElementById("content-tridaily-date-2").textContent = "Today";
-    document.getElementById("content-tridaily-date-3").textContent = "Tomorrow";
-  } else if (date2.toLocaleDateString() == todayMinTwo.toLocaleDateString()) {//The middle date is the day before yesterday
-    document.getElementById("content-tridaily-date-1").textContent = date1.toLocaleDateString();
-    document.getElementById("content-tridaily-date-2").textContent = date2.toLocaleDateString();
-    document.getElementById("content-tridaily-date-3").textContent = "Yesterday";
-  } else if (date2.toLocaleDateString() == todayMinOne.toLocaleDateString()) {//The middle date is yesterday
-    document.getElementById("content-tridaily-date-1").textContent = date1.toLocaleDateString();
-    document.getElementById("content-tridaily-date-2").textContent = "Yesterday"
-    document.getElementById("content-tridaily-date-3").textContent = "Today";
-  } else if (date2.toLocaleDateString() == todayPlusOne.toLocaleDateString()) {//The middle date is tomorrow
-    document.getElementById("content-tridaily-date-1").textContent = "Today";
-    document.getElementById("content-tridaily-date-2").textContent = "Tomorrow"
-    document.getElementById("content-tridaily-date-3").textContent = date3.toLocaleDateString();
-  } else if (date2.toLocaleDateString() == todayPlusTwo.toLocaleDateString()) {//The middle date is the day after tomorrow
-    document.getElementById("content-tridaily-date-1").textContent = "Tomorrow";
-    document.getElementById("content-tridaily-date-2").textContent = date2.toLocaleDateString();
-    document.getElementById("content-tridaily-date-3").textContent = date3.toLocaleDateString();
-  } else {//We are not close enough to the current day
-    document.getElementById("content-tridaily-date-1").textContent = date1.toLocaleDateString();
-    document.getElementById("content-tridaily-date-2").textContent = date2.toLocaleDateString();
-    document.getElementById("content-tridaily-date-3").textContent = date3.toLocaleDateString();
+function refreshDate(date, member) {
+  if (date == null || member == null) {
+    refreshDate(date0, 0);
+    refreshDate(date1, 1);
+    refreshDate(date2, 2);
+    refreshDate(date3, 3);
+    refreshDate(date4, 4);
+  } else {
+    var today = new Date();
+    var tomorrow = new Date(today);
+    var yesterday = new Date(today);
+    yesterday.setDate(today.getDate() - 1);
+    tomorrow.setDate(today.getDate() + 1);
+    if (date.toLocaleDateString() == yesterday.toLocaleDateString()) {
+      document.getElementById("content-tridaily-date-" + member).textContent = "Yesterday";
+    } else if (date.toLocaleDateString() == today.toLocaleDateString()) {
+      document.getElementById("content-tridaily-date-" + member).textContent = "Today";
+    } else if (date.toLocaleDateString() == tomorrow.toLocaleDateString()) {
+      document.getElementById("content-tridaily-date-" + member).textContent = "Tomorrow";
+    } else {
+      document.getElementById("content-tridaily-date-" + member).textContent = date.toLocaleDateString();
+    }
+    document.getElementById("content-tridaily-day-" + member).textContent = getDayOfWeek(date);
   }
-  //Set the names of the days.
-  document.getElementById("content-tridaily-day-1").textContent = getDayOfWeek(date1);
-  document.getElementById("content-tridaily-day-2").textContent = getDayOfWeek(date2);
-  document.getElementById("content-tridaily-day-3").textContent = getDayOfWeek(date3);
 }
 
 /**
  *  Update the global date variables to go back one day and then refresh the content.
  */
 function dateSelectionLeft() {
+  date0.setDate(date0.getDate() - 1);
   date1.setDate(date1.getDate() - 1);
   date2.setDate(date2.getDate() - 1);
   date3.setDate(date3.getDate() - 1);
-  refreshDate();
-  updateEventContent();
+  date4.setDate(date4.getDate() - 1);
+  //Move all the members 20% to the right.
+  document.getElementById("content-tridaily-selection-member-0").style.left = "20%";
+  document.getElementById("content-tridaily-selection-member-1").style.left = "40%";
+  document.getElementById("content-tridaily-selection-member-2").style.left = "60%";
+  document.getElementById("content-tridaily-selection-member-3").style.left = "80%";
+  document.getElementById("content-tridaily-selection-member-4").style.left = "100%";
+  //Remove the last one and redo the id's.
+  document.getElementById("content-tridaily-selection-member-4").remove();
+  document.getElementById("content-tridaily-selection-member-3").id = "content-tridaily-selection-member-4";
+  document.getElementById("content-tridaily-day-3").id = "content-tridaily-day-4";
+  document.getElementById("content-tridaily-date-3").id = "content-tridaily-date-4";
+  document.getElementById("content-tridaily-selection-member-2").id = "content-tridaily-selection-member-3";
+  document.getElementById("content-tridaily-day-2").id = "content-tridaily-day-3";
+  document.getElementById("content-tridaily-date-2").id = "content-tridaily-date-3";
+  document.getElementById("content-tridaily-selection-member-1").id = "content-tridaily-selection-member-2";
+  document.getElementById("content-tridaily-day-1").id = "content-tridaily-day-2";
+  document.getElementById("content-tridaily-date-1").id = "content-tridaily-date-2";
+  document.getElementById("content-tridaily-selection-member-0").id = "content-tridaily-selection-member-1";
+  document.getElementById("content-tridaily-day-0").id = "content-tridaily-day-1";
+  document.getElementById("content-tridaily-date-0").id = "content-tridaily-date-1";
+  var new_content_tridaily_selection_member = document.createElement("div");
+  new_content_tridaily_selection_member.className = "content-tridaily-selection-member";
+  new_content_tridaily_selection_member.id = "content-tridaily-selection-member-0";
+  new_content_tridaily_selection_member.style.left = "0%";
+  //Create the new first element.
+  var new_content_tridaily_selection_member_day = document.createElement("p");
+  new_content_tridaily_selection_member_day.id = "content-tridaily-day-0";
+  var new_content_tridaily_selection_member_date = document.createElement("p");
+  new_content_tridaily_selection_member_date.id = "content-tridaily-date-0";
+  new_content_tridaily_selection_member.append(new_content_tridaily_selection_member_day);
+  new_content_tridaily_selection_member.append(new_content_tridaily_selection_member_date);
+  document.getElementById("content-tridaily-selection-container").prepend(new_content_tridaily_selection_member);
+  refreshDate(date0, 0);
+  updateEventContent("left");
 }
 
 /**
  *  Update the global date variables to go forward one day and then refresh the content.
  */
 function dateSelectionRight() {
+  date0.setDate(date0.getDate() + 1);
   date1.setDate(date1.getDate() + 1);
   date2.setDate(date2.getDate() + 1);
   date3.setDate(date3.getDate() + 1);
-  refreshDate();
-  updateEventContent();
+  date4.setDate(date4.getDate() + 1);
+  //Move all the members 20% to the left.
+  document.getElementById("content-tridaily-selection-member-0").style.left = "-20%";
+  document.getElementById("content-tridaily-selection-member-1").style.left = "0%";
+  document.getElementById("content-tridaily-selection-member-2").style.left = "20%";
+  document.getElementById("content-tridaily-selection-member-3").style.left = "40%";
+  document.getElementById("content-tridaily-selection-member-4").style.left = "60%";
+  //Remove the first one and redo the id's.
+  document.getElementById("content-tridaily-selection-member-0").remove();
+  document.getElementById("content-tridaily-selection-member-1").id = "content-tridaily-selection-member-0";
+  document.getElementById("content-tridaily-day-1").id = "content-tridaily-day-0";
+  document.getElementById("content-tridaily-date-1").id = "content-tridaily-date-0";
+  document.getElementById("content-tridaily-selection-member-2").id = "content-tridaily-selection-member-1";
+  document.getElementById("content-tridaily-day-2").id = "content-tridaily-day-1";
+  document.getElementById("content-tridaily-date-2").id = "content-tridaily-date-1";
+  document.getElementById("content-tridaily-selection-member-3").id = "content-tridaily-selection-member-2";
+  document.getElementById("content-tridaily-day-3").id = "content-tridaily-day-2";
+  document.getElementById("content-tridaily-date-3").id = "content-tridaily-date-2";
+  document.getElementById("content-tridaily-selection-member-4").id = "content-tridaily-selection-member-3";
+  document.getElementById("content-tridaily-day-4").id = "content-tridaily-day-3";
+  document.getElementById("content-tridaily-date-4").id = "content-tridaily-date-3";
+  var new_content_tridaily_selection_member = document.createElement("div");
+  new_content_tridaily_selection_member.className = "content-tridaily-selection-member";
+  new_content_tridaily_selection_member.id = "content-tridaily-selection-member-4";
+  new_content_tridaily_selection_member.style.left = "80%";
+  //Create the new last element.
+  var new_content_tridaily_selection_member_day = document.createElement("p");
+  new_content_tridaily_selection_member_day.id = "content-tridaily-day-4";
+  var new_content_tridaily_selection_member_date = document.createElement("p");
+  new_content_tridaily_selection_member_date.id = "content-tridaily-date-4";
+  new_content_tridaily_selection_member.append(new_content_tridaily_selection_member_day);
+  new_content_tridaily_selection_member.append(new_content_tridaily_selection_member_date);
+  document.getElementById("content-tridaily-selection-container").append(new_content_tridaily_selection_member);
+  refreshDate(date4, 4);
+  updateEventContent("right");
 }
 /* Date logic ends here */
 
@@ -236,7 +285,11 @@ function wholeDayPair(date) {
   dateClone.setSeconds(0);
   dateClone.setMilliseconds(0);
   dateClonePlusOne = new Date(dateClone)
-  dateClonePlusOne.setDate(dateClone.getDate() + 1)
+  dateClonePlusOne.setDate(dateClone.getDate())
+  dateClonePlusOne.setHours(23);
+  dateClonePlusOne.setMinutes(59);
+  dateClonePlusOne.setSeconds(0);
+  dateClonePlusOne.setMilliseconds(0);
   return [dateClone, dateClonePlusOne];
 }
 
@@ -377,11 +430,9 @@ function onEventClick(event) {
 }
 
 function removeAllByClassName(name) {
-  console.log("test");
   var toRemove = document.getElementsByClassName(name);
   for (i = 0; i < toRemove.length; i++) {
     toRemove[i].remove();
-    console.log(toRemove[i]);
   }
 }
 

@@ -64,15 +64,72 @@ function getEventDate(date, member) {
   }).then(function(response) {
     var events = response.result.items;
     updateContentDate(events, member);
-    console.log(events);
   })
 }
   
 /**
  * Updates the event content with the current dates.
  */
-function updateEventContent() {
-  getEventDate(date1, 1);
-  getEventDate(date2, 2);
-  getEventDate(date3, 3);
+function updateEventContent(direction) {
+  if (direction == "right") {
+    //Move all members 20% to the left.
+    document.getElementById("content-tridaily-member-0").style.left = "-20%";
+    document.getElementById("content-tridaily-member-1").style.left = "0%";
+    document.getElementById("content-tridaily-member-2").style.left = "20%";
+    document.getElementById("content-tridaily-member-3").style.left = "40%";
+    document.getElementById("content-tridaily-member-4").style.left = "60%";
+    //Remove the first one and redo all the id's.
+    document.getElementById("content-tridaily-member-0").remove();
+    document.getElementById("content-tridaily-member-1").id = "content-tridaily-member-0";
+    document.getElementById("content-tridaily-member-2").id = "content-tridaily-member-1";
+    document.getElementById("content-tridaily-member-3").id = "content-tridaily-member-2";
+    document.getElementById("content-tridaily-member-4").id = "content-tridaily-member-3";
+    var new_content_tridaily_member = document.createElement("div");
+    new_content_tridaily_member.className = "content-tridaily-member";
+    new_content_tridaily_member.id = "content-tridaily-member-4";
+    new_content_tridaily_member.style.left = "80%";
+    document.getElementById("content-tridaily-event-container").append(new_content_tridaily_member);
+    getEventDate(date4, 4);
+  } else if (direction == "left") {
+    //Move all members 20% to the right.
+    document.getElementById("content-tridaily-member-0").style.left = "20%";
+    document.getElementById("content-tridaily-member-1").style.left = "40%";
+    document.getElementById("content-tridaily-member-2").style.left = "60%";
+    document.getElementById("content-tridaily-member-3").style.left = "80%";
+    document.getElementById("content-tridaily-member-4").style.left = "100%";
+    //Remove the last one and redo all the id's.
+    document.getElementById("content-tridaily-member-4").remove();
+    document.getElementById("content-tridaily-member-3").id = "content-tridaily-member-4";
+    document.getElementById("content-tridaily-member-2").id = "content-tridaily-member-3";
+    document.getElementById("content-tridaily-member-1").id = "content-tridaily-member-2";
+    document.getElementById("content-tridaily-member-0").id = "content-tridaily-member-1";
+    var new_content_tridaily_member = document.createElement("div");
+    new_content_tridaily_member.className = "content-tridaily-member";
+    new_content_tridaily_member.id = "content-tridaily-member-0";
+    new_content_tridaily_member.style.left = "0%";
+    document.getElementById("content-tridaily-event-container").prepend(new_content_tridaily_member);
+    getEventDate(date0, 0);
+  } else if (direction == null) {
+    getEventDate(date0, 0);
+    getEventDate(date1, 1);
+    getEventDate(date2, 2);
+    getEventDate(date3, 3);
+    getEventDate(date4, 4);
+  }
+}
+
+/**
+ * Makes sure that when event data is changed, the content is updated.
+ * May not work properly in Safari as 'service workers' are required, I think..
+ */
+function synchronizeApplications() {
+  gapi.client.calendar.events.watch({
+    calendarId: 'primary',
+    id: 'application',
+    token: '0000',
+    type: 'web_hook',
+    address: "window.location.href"
+  }).then(function() {
+    updateEventContent();
+  })
 }

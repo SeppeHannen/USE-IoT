@@ -124,48 +124,49 @@ div.content-tridaily-container {
     position: relative;
     width: 100%;
     height: calc(100% - 100px);
+    overflow: hidden;
 }
-div.content-tridaily {
-    display: flex;                  
-    flex-direction: row;
+div.content-tridaily-event-container {
     position: relative;
-    width: 100%;
+    left: -33.33%;
+    width: 166.67%;
     height: calc(100% - 100px);
     min-height: 300px;
 }
 
 div.content-tridaily-member {
+    position: absolute;
     display: flex;
-    flex-direction: column;
-    flex-grow: 1;   
+    flex-direction: column;  
     flex-basis: 100px;                          /* This makes sure the flex-grow calculation is done equally */
     align-items: flex-start;             
-    position: relative;
+    width: 20%;
     height: calc(100% - 25px);
     padding-top: 25px;
     overflow-y: hidden;                         /* Might want to be changed to scroll at some point */
     overflow-x: hidden;
     min-height: 300px; 
+    transition: 500ms;
+    transition-timing-function: cubic-bezier(0.37, 0, 0.62, 0.96);
 }
 
 div.content-tridaily-selection-container {
     position: relative;
-    display: flex;
-    flex-direction: row;
     box-sizing: border-box;
     padding: 20px;
     align-self: center;
-    left: 50%;
-    transform: translateX(-50%);
+    left: -33.33%;
     height: 100px;
-    width: 100%;
+    width: 166.67%;
     color: white;
 }
 
 div.content-tridaily-selection-member {
-    position: relative;
-    flex-grow: 1;
+    position: absolute;
+    width: 20%;
     height: 60px;
+    transition: 500ms;
+    transition-timing-function: cubic-bezier(0.37, 0, 0.62, 0.96);
 }
 
 div.content-tridaily-container p {
@@ -180,6 +181,14 @@ div.content-tridaily-container img {
     width: 50px;
     height: 50px;
 }
+
+div.content-tridaily-container img.date-selection {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    z-index: 1;
+}
+
     /* Event Styling */
     div.event-container {
         position: relative;
@@ -193,7 +202,7 @@ div.content-tridaily-container img {
         border: 1px solid white;
         border-radius: 15px;
         cursor: pointer;    
-        transition: 1000ms;
+        margin-bottom: 15px;
         line-height: 30px;
         opacity: 0;
     }

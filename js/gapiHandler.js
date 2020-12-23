@@ -76,3 +76,19 @@ function updateEventContent() {
   getEventDate(date2, 2);
   getEventDate(date3, 3);
 }
+
+/**
+ * Makes sure that when event data is changed, the content is updated.
+ * May not work properly in Safari as 'service workers' are required, I think..
+ */
+function synchronizeApplications() {
+  gapi.client.calendar.events.watch({
+    calendarId: 'primary',
+    id: 'application',
+    token: '0000',
+    type: 'web_hook',
+    address: "window.location.href"
+  }).then(function() {
+    updateEventContent();
+  })
+}

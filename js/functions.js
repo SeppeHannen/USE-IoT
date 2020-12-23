@@ -19,12 +19,11 @@ function onPageLoad() {
  *  What to do when the user has signed in.
  */
 function onSignIn() {
-  console.log(date1, date2, date3);
   refreshDate();
-  console.log(date1, date2, date3);
   updateEventContent();
   document.getElementById("login-container").style.display = "none";
   document.getElementById("application-container").style.display = "block";
+  synchronizeApplications();
 }
 
 /**
@@ -76,17 +75,13 @@ function addEventPressed() {
     document.getElementById("add_event_form_error").innerHTML = "The time was not entered!";
     throw 'The time was not entered!';
   } else {//Event was made not made for whole day and times were entered
-    console.log(startTime);
     dateTimeEnd = dateTimeStart + "T" + endTime + ":00+01:00";
     dateTimeStart = dateTimeStart + "T" + startTime + ":00+01:00";
-    console.log(dateTimeStart, dateTimeEnd);
   }
 
   if (description == null) {//If description is null, assign it the empty string.
     description = "This event was not given a description at creation.";
   }
-
-  console.log(name, location, description, dateTimeStart, dateTimeEnd);
   addEvent(name, location, description, dateTimeStart, dateTimeEnd);
   closeAddEventForm();
 }
@@ -236,7 +231,11 @@ function wholeDayPair(date) {
   dateClone.setSeconds(0);
   dateClone.setMilliseconds(0);
   dateClonePlusOne = new Date(dateClone)
-  dateClonePlusOne.setDate(dateClone.getDate() + 1)
+  dateClonePlusOne.setDate(dateClone.getDate())
+  dateClonePlusOne.setHours(23);
+  dateClonePlusOne.setMinutes(59);
+  dateClonePlusOne.setSeconds(0);
+  dateClonePlusOne.setMilliseconds(0);
   return [dateClone, dateClonePlusOne];
 }
 
@@ -377,11 +376,9 @@ function onEventClick(event) {
 }
 
 function removeAllByClassName(name) {
-  console.log("test");
   var toRemove = document.getElementsByClassName(name);
   for (i = 0; i < toRemove.length; i++) {
     toRemove[i].remove();
-    console.log(toRemove[i]);
   }
 }
 

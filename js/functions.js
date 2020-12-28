@@ -118,24 +118,17 @@ function updateContentDate(events, member) {
     var dateTimeEnd = events[i].end.dateTime;
     event_time.innerHTML += dateTimeStart.split("T")[1].substring(0,5) + " - " + dateTimeEnd.split("T")[1].substring(0,5) 
     
-    //Take care of the reminder section.
-    var event_reminder = document.createElement("div");
-    event_reminder.className = "event-member reminder";
-    var reminder_img = document.createElement("img");
-    reminder_img.src = "img/reminder.png";
-    reminder_img.className = "reminder";
-    event_reminder.appendChild(reminder_img);    
-    var reminder_paragraph = document.createElement("p");
-    reminder_paragraph.className = "reminder";
-    if (true) {
-      reminder_paragraph.innerHTML += "5m"
-    } else {
-      reminder_paragraph.innerHTML += "5m"
-    }
-    event_reminder.appendChild(reminder_paragraph);
-    
+    //Take care of the checkbox section.
+    var event_checkbox_container = document.createElement("div");
+    event_checkbox_container.className = "event-member";  
+    event_checkbox = document.createElement("input");
+    event_checkbox.type = "checkbox";
+    event_checkmark = document.createElement("span");
+    event_checkmark.className = "checkmark";
+    event_checkbox_container.appendChild(event_checkbox);
+
     //Append all the sections to the container
-    event_container.appendChild(event_reminder);           
+    event_container.appendChild(event_checkbox);           
     event_container.appendChild(event_title);
     event_container.appendChild(event_time);
 

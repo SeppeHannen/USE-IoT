@@ -118,7 +118,7 @@ function updateContentDate(events, member) {
     var dateTimeEnd = events[i].end.dateTime;
     event_time.innerHTML += dateTimeStart.split("T")[1].substring(0,5) + " - " + dateTimeEnd.split("T")[1].substring(0,5) 
     
-    //Take care of the reminder section.
+    //Take care of the checkbox section.
     var event_checkbox_container = document.createElement("div");
     event_checkbox_container.className = "event-member";  
     event_checkbox = document.createElement("input");

@@ -87,13 +87,13 @@ function addEventPressed() {
     description = "This event was not given a description at creation.";
   }
   addEvent(name, location, description, dateTimeStart, dateTimeEnd);
-  closeAddEventForm();
 }
 
 /**
  * Updates the event content of a content-member with its events.
  * @param {Array} events The events corresponding to {member}
  * @param {int} member The member which corresponds to the date of {events}
+ * @post Creates the events and gives the event container an id which is equal to the id of the event it represents.
  */
 function updateContentDate(events, member) {
   //Remove all existing event containers
@@ -104,12 +104,13 @@ function updateContentDate(events, member) {
     var event_container = document.createElement("div");
     event_container.className = "event-container";
     var event = events[i];
-    event_container.addEventListener("click", function() {onEventClick(event)});
+    event_container.addEventListener("click", function(e) {e.stopPropagation(); onEventClick(event)});
+    event_container.id = events[i].id;
 
     //Take care of the name section
     var event_title = document.createElement("div");    
     event_title.className = "event-member name";
-    event_title.innerHTML += events[i].summary;
+    event_title.innerHTML += events[i].summary + ": " + events[i].description;
 
     //Take care of the (starting) time section
     var event_time = document.createElement("div");
@@ -121,14 +122,17 @@ function updateContentDate(events, member) {
     //Take care of the checkbox section.
     var event_checkbox_container = document.createElement("div");
     event_checkbox_container.className = "event-member";  
+    event_checkbox_holder = document.createElement("div");
+    event_checkbox_holder.className = "checkbox"
+    event_checkbox_holder.onclick = function(e) {e.stopPropagation(); markEventComplete(event.id)};
     event_checkbox = document.createElement("input");
     event_checkbox.type = "checkbox";
-    event_checkmark = document.createElement("span");
-    event_checkmark.className = "checkmark";
-    event_checkbox_container.appendChild(event_checkbox);
+    event_checkbox_holder.appendChild(event_checkbox);
+    event_checkbox_container.appendChild(event_checkbox_holder);
+
 
     //Append all the sections to the container
-    event_container.appendChild(event_checkbox);           
+    event_container.appendChild(event_checkbox_container);           
     event_container.appendChild(event_title);
     event_container.appendChild(event_time);
 
@@ -422,11 +426,33 @@ function onEventClick(event) {
     }
 }
 
+/**
+ * Remove all HTML elements with a certain classname.
+ * @param {string} name 
+ */
 function removeAllByClassName(name) {
   var toRemove = document.getElementsByClassName(name);
   for (i = 0; i < toRemove.length; i++) {
     toRemove[i].remove();
   }
+}
+
+
+/**
+ * Mark an event with a certain id as complete.
+ * @param {string} id 
+ */
+function markEventComplete(id) {
+  //Remove the event from the calendar.
+  removeEvent(id);
+
+  //Show some nice effects.
+  document.getElementById(id).style.opacity = 0;
+
+  //After showing some nice effects, hide the event.
+  setTimeout(function() {
+  document.getElementById(id).remove();
+  }, 1000);
 }
 
   

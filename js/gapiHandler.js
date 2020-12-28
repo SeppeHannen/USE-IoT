@@ -23,7 +23,6 @@ function addEvent(name, location, description, dateTimeStart, dateTimeEnd) {
         //  'RRULE:FREQ=DAILY;COUNT=2'
         //],
         'attendees': [
-          {'email': 'force2finish@gmail.com'},
           //{'email': 'sbrin@example.com'}
         ],
         'reminders': {
@@ -40,7 +39,20 @@ function addEvent(name, location, description, dateTimeStart, dateTimeEnd) {
         'resource': event
       });
 
-      request.execute(function(event) {console.log(event)});
+      request.execute(function(event) {closeAddEventForm();});
+}
+
+/**
+ * Removes an event from the calendar.
+ * @param {string} id
+ */
+function removeEvent(id) {
+  var request = gapi.client.calendar.events.delete({
+    'calendarId': 'primary',
+    'eventId': id
+  });
+
+  request.execute();
 }
 
 /**
@@ -63,6 +75,7 @@ function getEventDate(date, member) {
     'orderBy': 'startTime'
   }).then(function(response) {
     var events = response.result.items;
+    console.log(events);
     updateContentDate(events, member);
   })
 }

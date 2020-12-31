@@ -125,47 +125,109 @@
       <!-- -->
     
       <!-- Absolutely styled -->
-      <button class="absolute-bottom-right add-event-icon" id="openEventFormButton" onclick="OpenAddEventForm()"><p>+</p></button>
+      <img class="absolute-bottom-right add-event-icon" id="openEventFormButton" onclick="OpenAddEventForm()" src="img/add-event-icon.png"></img>
       <!-- -->
-
-      <!-- Add Event Pop-up -->
-      <div class="add-event-popup" id="EventForm">
-        <form action="/action_page.php" class="form-container">
-          <h1>Create new event</h1>
-      
-          <div class="form" contenteditable type="textarea" data-text="Event name.." name="name" id="add_event_name" required></div>  
-
-          <div class="form" contenteditable type="textarea" data-text="Description.." name="description" id="add_event_description" required></div>  
-      
-          <div style="display: block;">
-            <h1 style="display: inline; font-size: 20px; font-weight: normal;">Date:</h1>
-            <input type="date" name="date" id="add_event_date" required>     
-          </div>
-
-          <div style="display: block">
-            <h1 style="display: inline; font-size: 20px; font-weight: normal;">Starts:</h1>
-            <input type="time" name="time" min="00:00" max="23:59" id="add_event_startTime" required>
-            <h1 style="display: inline; font-size: 20px; font-weight: normal;">Ends:</h1>
-            <input type="time" name="time" min="00:00" max="23:59" id="add_event_endTime" required>
-          </div>
-
-          <div style="display: block">
-            <h1 style="display: inline; font-size: 20px; font-weight: normal;">Event lasts entire day:</h1>
-            <input type="checkbox" name="all_day" id="add_event_all_day" required>
-          </div>
-
-          <div id="add_event_form_error"></div>
-
-          <div style="display: block; padding: 15px;">
-            <button type="button" class="btn submit" id="sumbit_even_form_button" onclick="addEventPressed()">Add Event</button>
-            <button type="button" class="btn cancel" id="close_event_form_button" onclick="closeAddEventForm()">Close</button>
-          </div>
-        </form>
-      </div>
-      <!-- End Add Event Pop-up -->
-
     <!-- End Application -->
     </div>
+
+    <!-- Add Event Pop-up (Medium Settings) -->
+    <div class="add-event-form" id="EventForm">
+      <form action="/action_page.php" class="form-container">
+        <h1>Create new event</h1>
+        
+        <div class="settings-container">
+          <div style="flex-grow: 1;">
+            <div class="form" contenteditable type="textarea" data-text="Add a task.." name="name" id="add_event_name"></div>  
+
+            <div class="form" contenteditable type="textarea" data-text="Description.." name="description" id="add_event_description"></div>  
+       
+            <div style="display: block;">
+              <h1>Date:</h1>
+              <input type="date" name="date" id="add_event_date">     
+            </div>
+
+          <!--
+            <div style="display: block">
+              <h1>Event lasts entire day:</h1>
+              <label class="switch">
+                <input type="checkbox" name="all_day" id="add_event_all_day">
+                <span class="slider round"></span>
+              </label>
+            </div>
+          -->
+          </div>
+
+
+          <div style="flex-grow: 1;">          
+            <div style="display: none;"  id="add_event_form_time_settings">
+              <h1 style="font-weight: bold; font-size: 20px; display: block;">Time settings:</h1>
+              <div style="display: block">
+                <h1>Starting time:</h1>
+                <input type="time" name="time" min="00:00" max="23:59" id="add_event_startTime">
+                <br>
+                <h1>Ending time:</h1>
+                <input type="time" name="time" min="00:00" max="23:59" id="add_event_endTime">
+              </div>
+            </div>
+
+            <div style="display: none;"  id="add_event_form_reminder_settings">
+              <h1 style="font-weight: bold; font-size: 20px; display: block;">Reminder settings:</h1>
+              <select id="add_event_reminder" name="reminder">
+                <option value="0">At time of event</option>
+                <option value="5">5 minutes before</option>
+                <option value="10">10 minutes before</option>
+                <option value="15">15 minutes before</option>
+                <option value="30">30 minutes before</option>
+                <option value="60">1 hour before</option>
+                <option value="120">2 hours before</option>
+                <option value="1440">1 day before</option>
+                <option value="2880">2 days before</option>
+                <option value="10080">1 week before</option>
+              </select>
+            </div>
+
+            <div style="display: none" id="add_event_form_recurrence_settings">
+              <h1 style="font-weight: bold; font-size: 20px; display: block;">Recurrence settings:</h1>
+              <h1>Repeat:</h1>
+              <select id="add_event_recurrence" name="recurrence">
+                <option value="0">Never</option>
+                <option value="1">Every day</option>
+                <option value="2">Every week</option>
+                <option value="3">Every 2 weeks</option>
+                <option value="4">Every month</option>
+                <option value="5">Every year</option>
+              </select>
+
+              <div style="display: block;">
+                <h1 >Repeat until:</h1>
+                <input type="date" name="date" id="add_event_recurrence_date">     
+              </div>
+            </div>
+
+            <div style="display: none" id="add_event_form_location_settings">
+              <h1 style="font-weight: bold; font-size: 20px; display: block;">Location settings:</h1>
+              <div class="form" contenteditable type="textarea" data-text="Location.." name="description" id="add_event_location"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="error" id="add_event_error"></div>
+
+        <div style="display: block;">
+          <img class="icon" style="position: absolute; left: 20px;" id="show_time_settings_button" onclick="showSettings(`time`)" src="img/time.png">
+          <img class="icon" style="position: absolute; left: 60px;" id="show_reminder_settings_button" onclick="showSettings(`reminder`)" src="img/reminder.png">
+          <img class="icon" style="position: absolute; left: 100px;" id="show_recurrence_settings_button" onclick="showSettings(`recurrence`)" src="img/recurrence.png">
+          <img class="icon" style="position: absolute; left: 140px;" id="show_location_settings_button" onclick="showSettings(`location`)" src="img/location.png">
+        </div>
+        <div style="position: relative; display: block; top: 50px;">
+          <button type="button" class="btn submit" id="sumbit_even_form_button" onclick="addEventPressed()">Add Event</button>
+          <button type="button" class="btn cancel" id="close_event_form_button" onclick="closeAddEventForm()">Close</button>
+        </div>
+
+      </form>
+    </div>
+    <!-- End Add Event Pop-up -->
+
 
     <!-- Login Screen -->
     <div class="login-container" id="login-container">

@@ -6,7 +6,7 @@
  * @param {String} dateTimeStart 
  * @param {String} dateTimeEnd 
  */
-function addEvent(name, location, description, dateTimeStart, dateTimeEnd) {
+function addEvent(name, location, description, dateTimeStart, dateTimeEnd, reminder) {
     var event = {
         'summary': name,
         'location': location,
@@ -27,10 +27,10 @@ function addEvent(name, location, description, dateTimeStart, dateTimeEnd) {
         ],
         'reminders': {
           'useDefault': false,
-          //'overrides': [
-          //  {'method': 'email', 'minutes': 24 * 60},
-          //  {'method': 'popup', 'minutes': 10}
-          //]
+          'overrides': [
+            {'method': 'email', 'minutes': reminder},
+            {'method': 'popup', 'minutes': reminder}
+          ]
         }
       };
 
@@ -39,7 +39,8 @@ function addEvent(name, location, description, dateTimeStart, dateTimeEnd) {
         'resource': event
       });
 
-      request.execute(function(event) {closeAddEventForm();});
+      //In case of a succes, do closeAddEventForm() else display the error message.
+      request.then(function(event) {updateEventContent(); closeAddEventForm()}, function(result) {document.getElementById("add_event_error").innerHTML = result.result.error.message});
 }
 
 /**

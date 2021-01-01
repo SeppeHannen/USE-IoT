@@ -455,18 +455,17 @@ function onEventClick(event) {
       elaborate_event_reminder_title.innerText = "Reminder:"
 
       //Create the reminder of the event.
-      var elaborate_event_reminder = document.createElement("select");
-      var option1 = document.createElement("option");
-      var option2 = document.createElement("option");
-      var option3 = document.createElement("option");
-      var option4 = document.createElement("option");
-      var option5 = document.createElement("option");
-      var option6 = document.createElement("option");
-      option1.setAttribute("0", "At time of event");
-      option2.setAttribute("1", "5 minutes before");
-      option3.setAttribute("2", "10 minutes before");
-      
-      elaborate_event_reminder.appendChild(option1)
+      // var elaborate_event_reminder = document.createElement("select");
+      // var option1 = document.createElement("option");
+      // var option2 = document.createElement("option");
+      // var option3 = document.createElement("option");
+      // var option4 = document.createElement("option");
+      // var option5 = document.createElement("option");
+      // var option6 = document.createElement("option");
+      // option1.setAttribute("0", "At time of event");
+      // option2.setAttribute("1", "5 minutes before");
+      // option3.setAttribute("2", "10 minutes before");
+      // elaborate_event_reminder.appendChild(option1)
 
       //Create the closing button.
       var elaborate_event_closing_button = document.createElement("img");

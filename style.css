@@ -466,7 +466,7 @@ div.content-tridaily-container img.date-selection {
     div.add-event-form div.settings-container {
         display: flex; 
         flex-direction: row; 
-        flex-wrap: nowrap; 
+        flex-wrap: wrap; 
         align-items: stretch;
     }
 

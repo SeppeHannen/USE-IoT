@@ -388,10 +388,16 @@ function onEventClick(event) {
       isEventBeingEdited = false;
     } else {//No other event is being edited so create a new popup.
       isEventBeingEdited = true;
+      console.log(event);
 
       //Create the container of the elaboration.
       var elaborate_event_container = document.createElement("div");
       elaborate_event_container.className = "elaborate-event-container";
+
+      //Create the variables.
+      var startTime = event.start.dateTime.split("T")[1].substring(0,5);
+      var endTime = event.end.dateTime.split("T")[1].substring(0,5);
+      var date = event.start.dateTime.split("T")[0];
 
       //Create the name of the event container.
       var elaborate_event_name = document.createElement("div");
@@ -415,17 +421,52 @@ function onEventClick(event) {
       var elaborate_event_description_title = document.createElement("h1");
       elaborate_event_description_title.innerText = "Description:";
 
-      //Create the starting time of the event container.
+      //Create the title of the date.
+      var elaborate_event_date_title = document.createElement("h1");
+      elaborate_event_date_title.innerText = "Date:";
+
+      //Create the date of the event.
+      var elaborate_event_date = document.createElement("input");
+      elaborate_event_date.type = "date";
+      elaborate_event_date.value = date;
+
+      //Create the title of the time.
+      var elaborate_event_time_title = document.createElement("h1");
+      elaborate_event_time_title.innerText = "Starting time / Ending time:"
+
+      //Create the starting time of the event.
       var elaborate_event_startTime = document.createElement("input");
       elaborate_event_startTime.className = "elaborate-event-time";
-      elaborate_event_startTime.type = "date";
-      elaborate_event_startTime.name = "startTime"
+      elaborate_event_startTime.type = "time";
+      elaborate_event_startTime.name = "startTime";
+      elaborate_event_startTime.id = "elaborate-event-startTime";
+      elaborate_event_startTime.value = startTime;
 
-      //Create the ending time of the event container.
+      //Create the ending time of the event.
       var elaborate_event_endTime = document.createElement("input");
       elaborate_event_endTime.className = "elaborate-event-time";
-      elaborate_event_endTime.type = "date";
-      elaborate_event_endTime.name = "endTime"
+      elaborate_event_endTime.type = "time";
+      elaborate_event_endTime.name = "endTime";
+      elaborate_event_endTime.id = "elaborate-event-endTime";
+      elaborate_event_endTime.value = endTime;
+
+      //Create the title of the reminder.
+      var elaborate_event_reminder_title = document.createElement("h1");
+      elaborate_event_reminder_title.innerText = "Reminder:"
+
+      //Create the reminder of the event.
+      var elaborate_event_reminder = document.createElement("select");
+      var option1 = document.createElement("option");
+      var option2 = document.createElement("option");
+      var option3 = document.createElement("option");
+      var option4 = document.createElement("option");
+      var option5 = document.createElement("option");
+      var option6 = document.createElement("option");
+      option1.setAttribute("0", "At time of event");
+      option2.setAttribute("1", "5 minutes before");
+      option3.setAttribute("2", "10 minutes before");
+      
+      elaborate_event_reminder.appendChild(option1)
 
       //Create the closing button.
       var elaborate_event_closing_button = document.createElement("img");
@@ -433,13 +474,24 @@ function onEventClick(event) {
       elaborate_event_closing_button.addEventListener("click", function() {removeAllByClassName("elaborate-event-container");isEventBeingEdited = false;});
       elaborate_event_closing_button.className = "elaborate-event-closing-button";
 
-      //Append everything to the container.
+      //Append everything to the container if appropriate.
       elaborate_event_container.appendChild(elaborate_event_name_title);
       elaborate_event_container.appendChild(elaborate_event_name);
-      elaborate_event_container.appendChild(elaborate_event_description_title);
-      elaborate_event_container.appendChild(elaborate_event_description);
-      elaborate_event_container.appendChild(elaborate_event_startTime);
-      elaborate_event_container.appendChild(elaborate_event_endTime);
+      //Append the description
+      if (event.description != "") {
+        elaborate_event_container.appendChild(elaborate_event_description_title);
+        elaborate_event_container.appendChild(elaborate_event_description);
+      }
+      //Append the date
+      elaborate_event_container.appendChild(elaborate_event_date_title);
+      elaborate_event_container.appendChild(elaborate_event_date);
+      //Append the time
+      if (!(startTime == "00:00" && endTime == "23:59")) {
+        elaborate_event_container.appendChild(elaborate_event_time_title);
+        elaborate_event_container.appendChild(elaborate_event_startTime);
+        elaborate_event_container.appendChild(elaborate_event_endTime);
+      }
+      //Append the closing button
       elaborate_event_container.appendChild(elaborate_event_closing_button);
 
       //Append to body

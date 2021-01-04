@@ -182,7 +182,7 @@ img.icon {
 
 /* Application Style */
 
-div.application-container {
+div.scheduler-application-container {
     position: relative;
     width: 100%;
     height: 100%;
@@ -209,14 +209,31 @@ div.header {
         font-size: 40px;
     }
 
-    div.header input {
-        position: relative;
+    #signout_button {
+        position: absolute;
+        top: 50%;
+        right: 35px;
+        height: 50px;
+        transform: translateY(-50%);
         display: inline-block;
-        left: 100%;
-        transform: translate(-200%, -25%);
-        padding: 8px;
-        margin: 0;
+        padding: 10px 15px;
+        padding-left: 45px;
+        background-color: #167ec7;
+        border: none;
+        border-radius: 5px;
+        color: white;
+        font-size: 18px;
+        box-sizing: border-box;
+        cursor: pointer;
+    }
+
+    #signout_icon {
+        width: 25px;
         height: 25px;
+        position: absolute;
+        right: 90px;
+        top: 13px;
+        filter: invert();
     }
     /* End Header Styling */
 
@@ -314,13 +331,14 @@ div.content-tridaily-container img.date-selection {
         cursor: pointer;    
         margin-bottom: 15px;
         line-height: 30px;
+        background-color: white;
+        color: black;
         transition: 1000ms;
     }
 
     div.event-container .event-member {
         height: 30px;
         font-size: 20px;
-        color: white;
     }
 
         /* Checkbox Styling */

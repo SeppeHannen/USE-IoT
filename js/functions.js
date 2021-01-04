@@ -26,9 +26,23 @@ function onPageLoad() {
 function onSignIn() {
   refreshDate();
   document.getElementById("login-container").style.display = "none";
-  document.getElementById("application-container").style.display = "block";
+  document.getElementById("scheduler-application-container").style.display = "block";
   synchronizeApplications();
   updateEventContent();
+}
+
+/**
+ *  What to do when the user has signed out.
+ */
+function onSignOut() {
+  document.getElementById("authorize_button").style.display = "block";
+  document.getElementById("login-container").style.display = "block";
+  document.getElementById("scheduler-application-container").style.display = "none";
+  for (i = 0; i < 5; i++) {
+    removeAllChildNodes(document.getElementById(`content-tridaily-member-` + i));
+    document.getElementById("content-tridaily-day-" + i).innerText = "";
+    document.getElementById("content-tridaily-date-" + i).innerText = "";
+  }
 }
 
 /**
@@ -40,7 +54,7 @@ function OpenAddEventForm() {
   //Focus the first text element, name;
   document.getElementById("add_event_name").focus({preventScroll:true});
   //Set the opacity of the application to 0.1;
-  document.getElementById("application-container").style.opacity = 0.1;
+  document.getElementById("scheduler-application-container").style.opacity = 0.1;
 }
 
 /**
@@ -57,7 +71,7 @@ function closeAddEventForm() {
   //Hide the extra settings;
   hideSettings();
   //Set the opacity of the application to 1;
-  document.getElementById("application-container").style.opacity = 1;
+  document.getElementById("scheduler-application-container").style.opacity = 1;
   document.getElementById("EventForm").style.transform = "translateY(0)";
   //Move the add_event_form in view;
   setTimeout(function() {document.getElementById("EventForm").style.transform = "";}, 300);
@@ -98,6 +112,10 @@ function addEventPressed() {
   if (description == "") {//If description is null, assign it the empty string.
     description = "This event was not given a description at creation.";
   }
+
+  //switch(recurrence) {
+    
+  //}
 
   addEvent(name, location, description, dateTimeStart, dateTimeEnd, reminder, recurrence);
 }
@@ -150,7 +168,6 @@ function updateContentDate(events, member) {
     event_checkbox.type = "checkbox";
     event_checkbox_holder.appendChild(event_checkbox);
     event_checkbox_container.appendChild(event_checkbox_holder);
-
 
     //Append all the sections to the container
     event_container.appendChild(event_checkbox_container);           

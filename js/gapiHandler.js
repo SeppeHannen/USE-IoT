@@ -6,7 +6,7 @@
  * @param {String} dateTimeStart 
  * @param {String} dateTimeEnd 
  */
-function addEvent(name, location, description, dateTimeStart, dateTimeEnd, reminder) {
+function addEvent(name, location, description, dateTimeStart, dateTimeEnd, reminder, recurrence) {
     var event = {
         'summary': name,
         'location': location,

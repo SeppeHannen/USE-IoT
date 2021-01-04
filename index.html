@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>USE IoT WebApp</title>
+    <title>Lumos - Task Manager</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="style.css">
     <script src="js/gapiHandler.js"></script>
@@ -11,11 +11,12 @@
   </head>
   <body onload="onPageLoad()">
 
-    <div class="application-container" id="application-container" onclick="removeAllByClassName('elaborate-event-container'); isEventBeingEdited = false;">
+    <!-- Scheduler Application Container -->
+    <div class="scheduler-application-container" id="scheduler-application-container" onclick="removeAllByClassName('elaborate-event-container'); isEventBeingEdited = false;">
       <!-- This the header of the application -->
       <div class="header">
-        <h1>Lumos</h1>
-        <input type="textarea" placeholder="Search..">
+        <h1><- Points</h1>
+        <button id="signout_button" style="display: none;"><img id="signout_icon" src="img/exit.png">Sign Out</button>
       </div>
       <!-- This is where the user selects the view -->
       <div class="view">
@@ -235,11 +236,16 @@
       <h1>Lumos</h1>
       <h2>Log in using your gmail account:</h2>
       <button id="authorize_button" style="display: none;">Log In</button>
-      <button id="signout_button" style="display: none;">Sign Out</button>
+      <!-- <button id="signout_button" style="display: none;">Sign Out</button> (Located in Scheduler Application Header) -->
     <!-- End Login Screen -->
     </div>
 
-    <!-- <div id="upcoming_events" style="display: none">The following events are upcoming:</div> -->
+    <!-- End Scheduler Application Container -->
+
+
+
+
+
 
     <script type="text/javascript">   //  This code handles the the log in menu and handles what happens after successful or unsuccessful login.
       // Client ID and API key from the Developer Console
@@ -283,7 +289,7 @@
           authorizeButton.onclick = handleAuthClick;
           signoutButton.onclick = handleSignoutClick;
         }, function(error) {
-          appendPre(JSON.stringify(error, null, 2));
+          console.log(error);
         });
       }
 
@@ -294,10 +300,10 @@
       function updateSigninStatus(isSignedIn) {
         if (isSignedIn) {
           authorizeButton.style.display = 'none';
-          signoutButton.style.display = 'block';             
+          signoutButton.style.display = 'inline-block';             
           onSignIn();
         } else {
-          authorizeButton.style.display = 'block';
+          authorizeButton.style.display = 'inline-block';
           signoutButton.style.display = 'none';
         }
       }
@@ -306,14 +312,22 @@
        *  Sign in the user upon button click.
        */
       function handleAuthClick(event) {
-        gapi.auth2.getAuthInstance().signIn();
+        gapi.auth2.getAuthInstance().signIn({
+          prompt: 'select_account'
+        }).then(function() {
+          if (gapi.auth2.getAuthInstance().isSignedIn.get()) {
+            onSignIn();
+          }
+        });
       }
 
       /**
        *  Sign out the user upon button click.
        */
       function handleSignoutClick(event) {
-        gapi.auth2.getAuthInstance().signOut();
+        gapi.auth2.getAuthInstance().signOut().then(function() {
+          onSignOut();
+        });
       }
     </script>
 

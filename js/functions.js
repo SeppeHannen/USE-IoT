@@ -14,13 +14,6 @@ date4.setDate(date2.getDate() + 2);
 var isEventBeingEdited = false;
 
 /**
- *  What to do when the page is loaded.
- */
-function onPageLoad() {
-
-}
-
-/**
  *  What to do when the user has signed in.
  */
 function onSignIn() {
@@ -163,7 +156,7 @@ function updateContentDate(events, member) {
     event_checkbox_container.className = "event-member";  
     event_checkbox_holder = document.createElement("div");
     event_checkbox_holder.className = "checkbox"
-    event_checkbox_holder.onclick = function(e) {e.stopPropagation(); markEventComplete(events[i].id)};
+    event_checkbox_holder.onclick = function(e) {e.stopPropagation(); removeEvent(events[i].id)};
     event_checkbox = document.createElement("input");
     event_checkbox.type = "checkbox";
     event_checkbox_holder.appendChild(event_checkbox);
@@ -177,6 +170,57 @@ function updateContentDate(events, member) {
     //Append the container to the right content-tridaily-member div.
     document.getElementById("content-tridaily-member-" + member).appendChild(event_container);
   }
+
+/**
+ * Updates the event content with the current dates.
+ */
+function updateEventContent(direction) {
+  if (direction == "right") {
+    //Move all members 20% to the left.
+    document.getElementById("content-tridaily-member-0").style.left = "-20%";
+    document.getElementById("content-tridaily-member-1").style.left = "0%";
+    document.getElementById("content-tridaily-member-2").style.left = "20%";
+    document.getElementById("content-tridaily-member-3").style.left = "40%";
+    document.getElementById("content-tridaily-member-4").style.left = "60%";
+    //Remove the first one and redo all the id's.
+    document.getElementById("content-tridaily-member-0").remove();
+    document.getElementById("content-tridaily-member-1").id = "content-tridaily-member-0";
+    document.getElementById("content-tridaily-member-2").id = "content-tridaily-member-1";
+    document.getElementById("content-tridaily-member-3").id = "content-tridaily-member-2";
+    document.getElementById("content-tridaily-member-4").id = "content-tridaily-member-3";
+    var new_content_tridaily_member = document.createElement("div");
+    new_content_tridaily_member.className = "content-tridaily-member";
+    new_content_tridaily_member.id = "content-tridaily-member-4";
+    new_content_tridaily_member.style.left = "80%";
+    document.getElementById("content-tridaily-event-container").append(new_content_tridaily_member);
+    getEventDate(date4, 4);
+  } else if (direction == "left") {
+    //Move all members 20% to the right.
+    document.getElementById("content-tridaily-member-0").style.left = "20%";
+    document.getElementById("content-tridaily-member-1").style.left = "40%";
+    document.getElementById("content-tridaily-member-2").style.left = "60%";
+    document.getElementById("content-tridaily-member-3").style.left = "80%";
+    document.getElementById("content-tridaily-member-4").style.left = "100%";
+    //Remove the last one and redo all the id's.
+    document.getElementById("content-tridaily-member-4").remove();
+    document.getElementById("content-tridaily-member-3").id = "content-tridaily-member-4";
+    document.getElementById("content-tridaily-member-2").id = "content-tridaily-member-3";
+    document.getElementById("content-tridaily-member-1").id = "content-tridaily-member-2";
+    document.getElementById("content-tridaily-member-0").id = "content-tridaily-member-1";
+    var new_content_tridaily_member = document.createElement("div");
+    new_content_tridaily_member.className = "content-tridaily-member";
+    new_content_tridaily_member.id = "content-tridaily-member-0";
+    new_content_tridaily_member.style.left = "0%";
+    document.getElementById("content-tridaily-event-container").prepend(new_content_tridaily_member);
+    getEventDate(date0, 0);
+  } else if (direction == null) {
+    getEventDate(date0, 0);
+    getEventDate(date1, 1);
+    getEventDate(date2, 2);
+    getEventDate(date3, 3);
+    getEventDate(date4, 4);
+  }
+}
 
   //Make all the events fade in at the same time by setting their opacity to 1.
   setTimeout(function() {
@@ -418,6 +462,7 @@ function onEventClick(event) {
 
       //Create the name of the event container.
       var elaborate_event_name = document.createElement("div");
+      elaborate_event_name.id = "elaborate-event-title";
       elaborate_event_name.className = "elaborate-event-title";
       elaborate_event_name.contentEditable = true;
       elaborate_event_name.type = "textarea";
@@ -429,6 +474,7 @@ function onEventClick(event) {
 
       //Create the description of the event container.
       var elaborate_event_description = document.createElement("div");
+      elaborate_event_description.id = "elaborate-event-description";
       elaborate_event_description.className = "elaborate-event-description";
       elaborate_event_description.contentEditable = true;
       elaborate_event_description.type = "textarea";
@@ -444,6 +490,7 @@ function onEventClick(event) {
 
       //Create the date of the event.
       var elaborate_event_date = document.createElement("input");
+      elaborate_event_date.id = "elaborate-event-date";
       elaborate_event_date.type = "date";
       elaborate_event_date.value = date;
 
@@ -484,6 +531,11 @@ function onEventClick(event) {
       // option3.setAttribute("2", "10 minutes before");
       // elaborate_event_reminder.appendChild(option1)
 
+      //Create the update button.
+      var elaborate_event_update_button = document.createElement("button");
+      elaborate_event_update_button.onclick = updateEvent(event.id);
+      elaborate_event_update_button.class = "button";
+
       //Create the closing button.
       var elaborate_event_closing_button = document.createElement("img");
       elaborate_event_closing_button.src = "img/close.png";
@@ -507,6 +559,8 @@ function onEventClick(event) {
         elaborate_event_container.appendChild(elaborate_event_startTime);
         elaborate_event_container.appendChild(elaborate_event_endTime);
       }
+      //Append the updating button
+      elaborate_event_container.appendChild(elaborate_event_update_button);
       //Append the closing button
       elaborate_event_container.appendChild(elaborate_event_closing_button);
 
@@ -532,16 +586,9 @@ function removeAllByClassName(name) {
  * @param {string} id 
  */
 function markEventComplete(id) {
-  //Remove the event from the calendar.
-  removeEvent(id);
-
   //Show some nice effects.
   document.getElementById(id).style.opacity = 0;
-
-  //After showing some nice effects, hide the event.
-  setTimeout(function() {
   document.getElementById(id).remove();
-  }, 1000);
 }
 
 
@@ -570,6 +617,24 @@ function hideSettings() {
   }
 }
 
+/**
+ * Swap the state of the application
+ */
+function changeApplicationState() {
+  var transform = document.getElementById("content-tridaily-container").style.transform;
+  console.log(transform);
+  if (transform == "") {//Change to statistics content
+    document.getElementById("content-tridaily-container").style.transform = "translateX(100%)";
+    document.getElementById("openEventFormButton").style.display = "none";
+    document.getElementById("statistics-application-container").style.transform = "translateX(0%)";
+    document.getElementById("applicationState").innerText = "Scheduler";
+  } else if (transform == "translateX(100%)") {//Change to scheduler content
+    document.getElementById("statistics-application-container").style.transform = "translateX(-100%)";
+    document.getElementById("content-tridaily-container").style.transform = "";
+    document.getElementById("openEventFormButton").style.display = "initial";
+    document.getElementById("applicationState").innerText = "Statistics";
+  }
+}
 
 
 

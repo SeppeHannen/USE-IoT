@@ -15,17 +15,38 @@
     <div class="scheduler-application-container" id="scheduler-application-container" onclick="removeAllByClassName('elaborate-event-container'); isEventBeingEdited = false;">
       <!-- This the header of the application -->
       <div class="header">
-        <h1><- Points</h1>
+        <h1 id="applicationState" onclick="changeApplicationState()">Statistics</h1>
         <button id="signout_button" style="display: none;"><img id="signout_icon" src="img/exit.png">Sign Out</button>
       </div>
-      <!-- This is where the user selects the view -->
-      <div class="view">
 
       <!-- Horizontal Line (Seperator)-->
       <hr style="background-color: white;">
 
+      <!-- Statistics Container --> 
+      <div class="statistics-application-container" id="statistics-application-container">
+        <!-- Quickstats Container -->
+        <div class="quickstats-container">
+          <div class="counter-container">
+            <h1>Total Tasks Completed</h1>
+            <p id="total-tasks-completed">103</p>
+          </div>
+          <div class="counter-container">
+            <h1>Weekly Tasks Completed</h1>
+            <p id="weekly-tasks-completed">7</p>
+          </div>
+          <div class="counter-container">
+            <h1>Daily Tasks Completed</h1>
+            <p id="daily-tasks-completed">2</p>
+          </div>
+        </div>
+        <!-- End Quickstats Container -->
+        <!-- Horizontal Line (Seperator)-->
+        <hr style="background-color: white;">
       </div>
-      <div class="content-tridaily-container">
+      <!-- End Statistics Container -->
+
+      <!-- Scheduler Content -->
+      <div class="content-tridaily-container" id="content-tridaily-container">
         <div class="content-tridaily-selection-container" id="content-tridaily-selection-container">
           <img class="cursor date-selection" style="left: calc(20% + 20px);" src="img/left-arrow.png" id="date-selection-left" onclick="dateSelectionLeft()">
           <div class="content-tridaily-selection-member" id="content-tridaily-selection-member-0" style="left: 0%;">
@@ -128,6 +149,7 @@
       <!-- Absolutely styled -->
       <img class="absolute-bottom-right add-event-icon" id="openEventFormButton" onclick="OpenAddEventForm()" src="img/add-event-icon.png"></img>
       <!-- -->
+      <!-- End Scheduler Content -->
     <!-- End Application -->
     </div>
 
@@ -241,11 +263,6 @@
     </div>
 
     <!-- End Scheduler Application Container -->
-
-
-
-
-
 
     <script type="text/javascript">   //  This code handles the the log in menu and handles what happens after successful or unsuccessful login.
       // Client ID and API key from the Developer Console

@@ -6,7 +6,7 @@
  * @param {String} dateTimeStart 
  * @param {String} dateTimeEnd 
  */
-function addEvent(name, location, description, dateTimeStart, dateTimeEnd, reminder) {
+function addEvent(name, location, description, dateTimeStart, dateTimeEnd, reminder, recurrence) {
     var event = {
         'summary': name,
         'location': location,
@@ -45,7 +45,7 @@ function addEvent(name, location, description, dateTimeStart, dateTimeEnd, remin
 
 /**
  * Removes an event from the calendar.
- * @param {string} id
+ * @param {String} id The id of the event in the google API.
  */
 function removeEvent(id) {
   var request = gapi.client.calendar.events.delete({
@@ -53,7 +53,30 @@ function removeEvent(id) {
     'eventId': id
   });
 
-  request.execute();
+  request.then(function() {markEventComplete()});
+}
+
+/**
+ * Updates an event with the new information from the elaborate event screen.
+ * @param {String} id The id of the event in the google API.
+ */
+function updateEvent(id) {
+  console.log("Not working yet, almost.");
+
+  // date = document.getElementById("elaborate-event-date").value;
+  // startTime = document.getElementById("elaborate-event-startTime");
+  // endTime = document.getElementById("elaborate-event-endTime");
+  // date = null;
+
+  // var request = gapi.client.calendar.events.update({
+  //   'calendarId': 'primary',
+  //   'eventId':  id,
+  //   'summary': document.getElementById("elaborate-event-title"),
+  //   'description': document.getElementById("elaborate-event-description")
+  // });
+
+
+  // request.execute();
 }
 
 /**
@@ -79,57 +102,6 @@ function getEventDate(date, member) {
     console.log(events);
     updateContentDate(events, member);
   })
-}
-  
-/**
- * Updates the event content with the current dates.
- */
-function updateEventContent(direction) {
-  if (direction == "right") {
-    //Move all members 20% to the left.
-    document.getElementById("content-tridaily-member-0").style.left = "-20%";
-    document.getElementById("content-tridaily-member-1").style.left = "0%";
-    document.getElementById("content-tridaily-member-2").style.left = "20%";
-    document.getElementById("content-tridaily-member-3").style.left = "40%";
-    document.getElementById("content-tridaily-member-4").style.left = "60%";
-    //Remove the first one and redo all the id's.
-    document.getElementById("content-tridaily-member-0").remove();
-    document.getElementById("content-tridaily-member-1").id = "content-tridaily-member-0";
-    document.getElementById("content-tridaily-member-2").id = "content-tridaily-member-1";
-    document.getElementById("content-tridaily-member-3").id = "content-tridaily-member-2";
-    document.getElementById("content-tridaily-member-4").id = "content-tridaily-member-3";
-    var new_content_tridaily_member = document.createElement("div");
-    new_content_tridaily_member.className = "content-tridaily-member";
-    new_content_tridaily_member.id = "content-tridaily-member-4";
-    new_content_tridaily_member.style.left = "80%";
-    document.getElementById("content-tridaily-event-container").append(new_content_tridaily_member);
-    getEventDate(date4, 4);
-  } else if (direction == "left") {
-    //Move all members 20% to the right.
-    document.getElementById("content-tridaily-member-0").style.left = "20%";
-    document.getElementById("content-tridaily-member-1").style.left = "40%";
-    document.getElementById("content-tridaily-member-2").style.left = "60%";
-    document.getElementById("content-tridaily-member-3").style.left = "80%";
-    document.getElementById("content-tridaily-member-4").style.left = "100%";
-    //Remove the last one and redo all the id's.
-    document.getElementById("content-tridaily-member-4").remove();
-    document.getElementById("content-tridaily-member-3").id = "content-tridaily-member-4";
-    document.getElementById("content-tridaily-member-2").id = "content-tridaily-member-3";
-    document.getElementById("content-tridaily-member-1").id = "content-tridaily-member-2";
-    document.getElementById("content-tridaily-member-0").id = "content-tridaily-member-1";
-    var new_content_tridaily_member = document.createElement("div");
-    new_content_tridaily_member.className = "content-tridaily-member";
-    new_content_tridaily_member.id = "content-tridaily-member-0";
-    new_content_tridaily_member.style.left = "0%";
-    document.getElementById("content-tridaily-event-container").prepend(new_content_tridaily_member);
-    getEventDate(date0, 0);
-  } else if (direction == null) {
-    getEventDate(date0, 0);
-    getEventDate(date1, 1);
-    getEventDate(date2, 2);
-    getEventDate(date3, 3);
-    getEventDate(date4, 4);
-  }
 }
 
 /**

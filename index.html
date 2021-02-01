@@ -5,7 +5,6 @@
     <meta charset="utf-8" />
     <link rel="stylesheet" href="style.css">
     <script src="js/gapiHandler.js"></script>
-    <script src="js/functions.js"></script>
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Langar&family=Nunito:wght@200&family=Ubuntu&display=swap&family=Bitter&display=swap" rel="stylesheet">
   </head>
@@ -42,6 +41,9 @@
         <!-- End Quickstats Container -->
         <!-- Horizontal Line (Seperator)-->
         <hr style="background-color: white;">
+
+        <img class="example-plot" src="img/example-plot.png">
+        <img class="widget" src="img/widget.png">
       </div>
       <!-- End Statistics Container -->
 
@@ -153,7 +155,7 @@
     <!-- End Application -->
     </div>
 
-    <!-- Add Event Pop-up (Medium Settings) -->
+    <!-- Add Event Pop-up -->
     <div class="add-event-form" id="EventForm">
       <form action="/action_page.php" class="form-container">
         <h1>Create new event</h1>
@@ -168,16 +170,6 @@
               <h1>Date:</h1>
               <input type="date" name="date" id="add_event_date">     
             </div>
-
-          <!--
-            <div style="display: block">
-              <h1>Event lasts entire day:</h1>
-              <label class="switch">
-                <input type="checkbox" name="all_day" id="add_event_all_day">
-                <span class="slider round"></span>
-              </label>
-            </div>
-          -->
           </div>
 
 
@@ -250,7 +242,6 @@
       </form>
     </div>
     <!-- End Add Event Pop-up -->
-
 
     <!-- Login Screen -->
     <div class="login-container" id="login-container">

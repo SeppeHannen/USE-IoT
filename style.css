@@ -475,7 +475,21 @@ div.content-tridaily-container img.date-selection {
             cursor: pointer;
         }
 
+        img.example-plot {
+            height: 30%;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
 
+        img.widget {
+            position: absolute;
+            width: 15%;
+            top: 50%;
+            left: 17%;
+            transform: translate(0px, -50%);
+        }
         /* End Elaborate Event Styling */
 
     /* End Event Styling */

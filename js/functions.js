@@ -21,7 +21,7 @@ function onSignIn() {
   document.getElementById("login-container").style.display = "none";
   document.getElementById("scheduler-application-container").style.display = "block";
   synchronizeApplications();
-  updateEventContent();
+  updateEventContent(null);
 }
 
 /**
@@ -61,8 +61,6 @@ function closeAddEventForm() {
   document.getElementById("add_event_startTime").value = null;
   document.getElementById("add_event_endTime").value = null;
   document.getElementById("add_event_error").value = null;
-  //Hide the extra settings;
-  hideSettings();
   //Set the opacity of the application to 1;
   document.getElementById("scheduler-application-container").style.opacity = 1;
   document.getElementById("EventForm").style.transform = "translateY(0)";
@@ -78,9 +76,6 @@ function addEventPressed() {
   var name = document.getElementById("add_event_name").innerHTML;
   var dateTimeStart = document.getElementById("add_event_date").value;  //Format: 18-12-2020T12:00:00Z
   var dateTimeEnd;
-  var location = document.getElementById("add_event_location").innerHTML;
-  var reminder = parseInt(document.getElementById("add_event_reminder").value);
-  var recurrence = document.getElementById("add_event_recurrence").value;
   var description = document.getElementById("add_event_description").innerHTML;
   var startTime = document.getElementById("add_event_startTime").value;
   var endTime = document.getElementById("add_event_endTime").value;
@@ -106,11 +101,7 @@ function addEventPressed() {
     description = "This event was not given a description at creation.";
   }
 
-  //switch(recurrence) {
-    
-  //}
-
-  addEvent(name, location, description, dateTimeStart, dateTimeEnd, reminder, recurrence);
+  addEvent(name, description, dateTimeStart, dateTimeEnd);
 }
 
 /**
@@ -133,11 +124,7 @@ function updateContentDate(events, member) {
     //Take care of the name section
     var event_title = document.createElement("div");    
     event_title.className = "event-member name";
-    if (events[i].description != "") {//If description is not empty
-      event_title.innerHTML += events[i].summary + ": " + events[i].description;
-    } else {//If description is empty
-      event_title.innerHTML += events[i].summary;
-    }
+    event_title.innerHTML += events[i].summary;
 
     //Take care of the time section
     var event_time = document.createElement("div");
@@ -170,57 +157,6 @@ function updateContentDate(events, member) {
     //Append the container to the right content-tridaily-member div.
     document.getElementById("content-tridaily-member-" + member).appendChild(event_container);
   }
-
-/**
- * Updates the event content with the current dates.
- */
-function updateEventContent(direction) {
-  if (direction == "right") {
-    //Move all members 20% to the left.
-    document.getElementById("content-tridaily-member-0").style.left = "-20%";
-    document.getElementById("content-tridaily-member-1").style.left = "0%";
-    document.getElementById("content-tridaily-member-2").style.left = "20%";
-    document.getElementById("content-tridaily-member-3").style.left = "40%";
-    document.getElementById("content-tridaily-member-4").style.left = "60%";
-    //Remove the first one and redo all the id's.
-    document.getElementById("content-tridaily-member-0").remove();
-    document.getElementById("content-tridaily-member-1").id = "content-tridaily-member-0";
-    document.getElementById("content-tridaily-member-2").id = "content-tridaily-member-1";
-    document.getElementById("content-tridaily-member-3").id = "content-tridaily-member-2";
-    document.getElementById("content-tridaily-member-4").id = "content-tridaily-member-3";
-    var new_content_tridaily_member = document.createElement("div");
-    new_content_tridaily_member.className = "content-tridaily-member";
-    new_content_tridaily_member.id = "content-tridaily-member-4";
-    new_content_tridaily_member.style.left = "80%";
-    document.getElementById("content-tridaily-event-container").append(new_content_tridaily_member);
-    getEventDate(date4, 4);
-  } else if (direction == "left") {
-    //Move all members 20% to the right.
-    document.getElementById("content-tridaily-member-0").style.left = "20%";
-    document.getElementById("content-tridaily-member-1").style.left = "40%";
-    document.getElementById("content-tridaily-member-2").style.left = "60%";
-    document.getElementById("content-tridaily-member-3").style.left = "80%";
-    document.getElementById("content-tridaily-member-4").style.left = "100%";
-    //Remove the last one and redo all the id's.
-    document.getElementById("content-tridaily-member-4").remove();
-    document.getElementById("content-tridaily-member-3").id = "content-tridaily-member-4";
-    document.getElementById("content-tridaily-member-2").id = "content-tridaily-member-3";
-    document.getElementById("content-tridaily-member-1").id = "content-tridaily-member-2";
-    document.getElementById("content-tridaily-member-0").id = "content-tridaily-member-1";
-    var new_content_tridaily_member = document.createElement("div");
-    new_content_tridaily_member.className = "content-tridaily-member";
-    new_content_tridaily_member.id = "content-tridaily-member-0";
-    new_content_tridaily_member.style.left = "0%";
-    document.getElementById("content-tridaily-event-container").prepend(new_content_tridaily_member);
-    getEventDate(date0, 0);
-  } else if (direction == null) {
-    getEventDate(date0, 0);
-    getEventDate(date1, 1);
-    getEventDate(date2, 2);
-    getEventDate(date3, 3);
-    getEventDate(date4, 4);
-  }
-}
 
   //Make all the events fade in at the same time by setting their opacity to 1.
   setTimeout(function() {
@@ -514,27 +450,7 @@ function onEventClick(event) {
       elaborate_event_endTime.id = "elaborate-event-endTime";
       elaborate_event_endTime.value = endTime;
 
-      //Create the title of the reminder.
-      var elaborate_event_reminder_title = document.createElement("h1");
-      elaborate_event_reminder_title.innerText = "Reminder:"
 
-      //Create the reminder of the event.
-      // var elaborate_event_reminder = document.createElement("select");
-      // var option1 = document.createElement("option");
-      // var option2 = document.createElement("option");
-      // var option3 = document.createElement("option");
-      // var option4 = document.createElement("option");
-      // var option5 = document.createElement("option");
-      // var option6 = document.createElement("option");
-      // option1.setAttribute("0", "At time of event");
-      // option2.setAttribute("1", "5 minutes before");
-      // option3.setAttribute("2", "10 minutes before");
-      // elaborate_event_reminder.appendChild(option1)
-
-      //Create the update button.
-      var elaborate_event_update_button = document.createElement("button");
-      elaborate_event_update_button.onclick = updateEvent(event.id);
-      elaborate_event_update_button.class = "button";
 
       //Create the closing button.
       var elaborate_event_closing_button = document.createElement("img");
@@ -559,8 +475,6 @@ function onEventClick(event) {
         elaborate_event_container.appendChild(elaborate_event_startTime);
         elaborate_event_container.appendChild(elaborate_event_endTime);
       }
-      //Append the updating button
-      elaborate_event_container.appendChild(elaborate_event_update_button);
       //Append the closing button
       elaborate_event_container.appendChild(elaborate_event_closing_button);
 
@@ -588,53 +502,11 @@ function removeAllByClassName(name) {
 function markEventComplete(id) {
   //Show some nice effects.
   document.getElementById(id).style.opacity = 0;
-  document.getElementById(id).remove();
+  setTimeout(function() {
+    document.getElementById(id).remove();
+  }, 1000);
 }
 
-
-/**
- * Show the settings of some type in the add-event-form
- * @param {string} type The type of settings to show
- */
-function showSettings(type) {
-  hideSettings();
-  document.getElementById("add_event_form_" + type + "_settings").style.display = "block";
-  document.getElementById("show_" + type + "_settings_button").style.onclick = "";
-  document.getElementById("show_" + type + "_settings_button").style.filter = "invert()";
-}
-
-/**
- * Hide the extra settings in the add-event-form
- */
-function hideSettings() {
-  types = ["reminder", "recurrence", "time", "location"];
-  for (i = 0; i < types.length; i++) {
-    console.log("add_event_form_" + types[i] + "_settings");
-    document.getElementById("add_event_form_" + types[i] + "_settings").style.display = "none";
-    document.getElementById("show_" + types[i] + "_settings_button").style.display = "inline";
-    document.getElementById("show_" + types[i] + "_settings_button").style.filter = "";
-    document.getElementById("show_" + types[i] + "_settings_button").style.onclick = "showSettings(" + types[i] + ")";
-  }
-}
-
-/**
- * Swap the state of the application
- */
-function changeApplicationState() {
-  var transform = document.getElementById("content-tridaily-container").style.transform;
-  console.log(transform);
-  if (transform == "") {//Change to statistics content
-    document.getElementById("content-tridaily-container").style.transform = "translateX(100%)";
-    document.getElementById("openEventFormButton").style.display = "none";
-    document.getElementById("statistics-application-container").style.transform = "translateX(0%)";
-    document.getElementById("applicationState").innerText = "Scheduler";
-  } else if (transform == "translateX(100%)") {//Change to scheduler content
-    document.getElementById("statistics-application-container").style.transform = "translateX(-100%)";
-    document.getElementById("content-tridaily-container").style.transform = "";
-    document.getElementById("openEventFormButton").style.display = "initial";
-    document.getElementById("applicationState").innerText = "Statistics";
-  }
-}
 
 
 

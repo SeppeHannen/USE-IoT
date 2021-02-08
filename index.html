@@ -9,46 +9,23 @@
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Langar&family=Nunito:wght@200&family=Ubuntu&display=swap&family=Bitter&display=swap" rel="stylesheet">
   </head>
-  <body onload="onPageLoad()">
+  <body>
 
     <!-- Scheduler Application Container -->
     <div class="scheduler-application-container" id="scheduler-application-container" onclick="removeAllByClassName('elaborate-event-container'); isEventBeingEdited = false;">
       <!-- This the header of the application -->
       <div class="header">
-        <h1 id="applicationState" onclick="changeApplicationState()">Statistics</h1>
+        <h1 id="applicationState">Lumos</h1>
         <button id="signout_button" style="display: none;"><img id="signout_icon" src="img/exit.png">Sign Out</button>
       </div>
 
       <!-- Horizontal Line (Seperator)-->
       <hr style="background-color: white;">
 
-      <!-- Statistics Container --> 
-      <div class="statistics-application-container" id="statistics-application-container">
-        <!-- Quickstats Container -->
-        <div class="quickstats-container">
-          <div class="counter-container">
-            <h1>Total Tasks Completed</h1>
-            <p id="total-tasks-completed">103</p>
-          </div>
-          <div class="counter-container">
-            <h1>Weekly Tasks Completed</h1>
-            <p id="weekly-tasks-completed">7</p>
-          </div>
-          <div class="counter-container">
-            <h1>Daily Tasks Completed</h1>
-            <p id="daily-tasks-completed">2</p>
-          </div>
-        </div>
-        <!-- End Quickstats Container -->
-        <!-- Horizontal Line (Seperator)-->
-        <hr style="background-color: white;">
-      </div>
-      <!-- End Statistics Container -->
-
       <!-- Scheduler Content -->
       <div class="content-tridaily-container" id="content-tridaily-container">
         <div class="content-tridaily-selection-container" id="content-tridaily-selection-container">
-          <img class="cursor date-selection" style="left: calc(20% + 20px);" src="img/left-arrow.png" id="date-selection-left" onclick="dateSelectionLeft()">
+          <img class="cursor date-selection" style="left: calc(40% + 20px)" src="img/left-arrow.png" id="date-selection-left" onclick="dateSelectionLeft()">
           <div class="content-tridaily-selection-member" id="content-tridaily-selection-member-0" style="left: 0%;">
             <p id="content-tridaily-day-0">
                 <!-- Day 1 is set here by scripts -->
@@ -93,7 +70,7 @@
                 <!-- Date 1 is set here by scripts -->
             </p>
           </div>
-          <img class="cursor date-selection" style="right: calc(20% + 20px);" src="img/right-arrow.png" id="date-selection-right" onclick="dateSelectionRight()">
+          <img class="cursor date-selection" style="right: calc(40% + 20px)" src="img/right-arrow.png" id="date-selection-right" onclick="dateSelectionRight()">
         </div>
 
         <!-- Horizontal Line (Seperator)-->
@@ -161,88 +138,23 @@
         <div class="settings-container">
           <div style="flex-grow: 1;">
             <div class="form" contenteditable type="textarea" data-text="Add a task.." name="name" id="add_event_name"></div>  
-
             <div class="form" contenteditable type="textarea" data-text="Description.." name="description" id="add_event_description"></div>  
-       
+      
             <div style="display: block;">
-              <h1>Date:</h1>
-              <input type="date" name="date" id="add_event_date">     
-            </div>
-
-          <!--
-            <div style="display: block">
-              <h1>Event lasts entire day:</h1>
-              <label class="switch">
-                <input type="checkbox" name="all_day" id="add_event_all_day">
-                <span class="slider round"></span>
-              </label>
-            </div>
-          -->
-          </div>
-
-
-          <div style="flex-grow: 1; min-width: 250px;">          
-            <div style="display: none;"  id="add_event_form_time_settings">
-              <h1 style="font-weight: bold; font-size: 20px; display: block;">Time settings:</h1>
-              <div style="display: block">
-                <h1>Starting time:</h1>
-                <input type="time" name="time" min="00:00" max="23:59" id="add_event_startTime">
-                <br>
-                <h1>Ending time:</h1>
-                <input type="time" name="time" min="00:00" max="23:59" id="add_event_endTime">
-              </div>
-            </div>
-
-            <div style="display: none;"  id="add_event_form_reminder_settings">
-              <h1 style="font-weight: bold; font-size: 20px; display: block;">Reminder settings:</h1>
-              <select id="add_event_reminder" name="reminder">
-                <option value="0">At time of event</option>
-                <option value="5">5 minutes before</option>
-                <option value="10">10 minutes before</option>
-                <option value="15">15 minutes before</option>
-                <option value="30">30 minutes before</option>
-                <option value="60">1 hour before</option>
-                <option value="120">2 hours before</option>
-                <option value="1440">1 day before</option>
-                <option value="2880">2 days before</option>
-                <option value="10080">1 week before</option>
-              </select>
-            </div>
-
-            <div style="display: none" id="add_event_form_recurrence_settings">
-              <h1 style="font-weight: bold; font-size: 20px; display: block;">Recurrence settings:</h1>
-              <h1>Repeat:</h1>
-              <select id="add_event_recurrence" name="recurrence">
-                <option value="0">Never</option>
-                <option value="1">Every day</option>
-                <option value="2">Every week</option>
-                <option value="3">Every 2 weeks</option>
-                <option value="4">Every month</option>
-                <option value="5">Every year</option>
-              </select>
-
-              <div style="display: block; min-width: 250px;">
-                <h1 >Repeat until:</h1>
-                <input type="date" name="date" id="add_event_recurrence_date">     
-              </div>
-            </div>
-
-            <div style="display: none" id="add_event_form_location_settings">
-              <h1 style="font-weight: bold; font-size: 20px; display: block;">Location settings:</h1>
-              <div class="form" contenteditable type="textarea" data-text="Location.." name="description" id="add_event_location"></div>
+              <label class="elaboration">Date:</label>
+              <input type="date" name="date" id="add_event_date">
+              <br>
+              <label class="elaboration">Start:</label>
+              <input type="time" name="time" min="00:00" max="23:59" id="add_event_startTime">
+              <br>
+              <label class="elaboration">End:</label>
+              <input type="time" name="time" min="00:00" max="23:59" id="add_event_endTime">     
             </div>
           </div>
         </div>
 
         <div class="error" id="add_event_error"></div>
-
-        <div style="display: block;">
-          <img class="icon" style="position: absolute; left: 20px;" id="show_time_settings_button" onclick="showSettings(`time`)" src="img/time.png">
-          <img class="icon" style="position: absolute; left: 60px;" id="show_reminder_settings_button" onclick="showSettings(`reminder`)" src="img/reminder.png">
-          <img class="icon" style="position: absolute; left: 100px;" id="show_recurrence_settings_button" onclick="showSettings(`recurrence`)" src="img/recurrence.png">
-          <img class="icon" style="position: absolute; left: 140px;" id="show_location_settings_button" onclick="showSettings(`location`)" src="img/location.png">
-        </div>
-        <div style="position: relative; display: block; top: 50px;">
+        <div class="button-container">
           <button type="button" class="btn submit" id="sumbit_even_form_button" onclick="addEventPressed()">Add Event</button>
           <button type="button" class="btn cancel" id="close_event_form_button" onclick="closeAddEventForm()">Close</button>
         </div>

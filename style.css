@@ -70,8 +70,8 @@ hr {
     position: absolute;
     right: 50px;
     bottom: 50px;
-    width: 50px;
-    height: 50px;
+    width: 100px;
+    height: 100px;
 }
 
 .add-event-icon {
@@ -85,7 +85,8 @@ hr {
 }
 
 .btn {
-    padding: 8px 13px;
+    padding: 25px 25px;
+    width: 200px;
     margin: 5px;
     background-color: #167ec7;
     border: none;
@@ -94,6 +95,7 @@ hr {
     border-bottom: 1px solid white;
     box-sizing: border-box;
     cursor: pointer;
+    font-size: 30px;
 }
 
 .btn:hover {
@@ -102,6 +104,12 @@ hr {
 
 input {
     user-select: none;
+}
+
+div.add-event-form input {
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 h1 {
@@ -217,13 +225,13 @@ div.header {
         height: 50px;
         transform: translateY(-50%);
         display: inline-block;
-        padding: 10px 15px;
-        padding-left: 45px;
+        padding: 10px 25px;
+        padding-left: 60px;
         background-color: #167ec7;
         border: none;
         border-radius: 5px;
         color: white;
-        font-size: 18px;
+        font-size: 25px;
         box-sizing: border-box;
         cursor: pointer;
     }
@@ -232,54 +240,12 @@ div.header {
         width: 25px;
         height: 25px;
         position: absolute;
-        right: 90px;
-        top: 13px;
+        left: 10px;
+        top: 50%;
+        transform: translateY(-50%);
         filter: invert();
     }
     /* End Header Styling */
-
-    /* Statistics Styling */
-    div.statistics-application-container {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        transform: translateX(-100%);
-        transition: 500ms;
-    }
-
-    div.statistics-application-container div.quickstats-container {
-        position: relative;
-        display: flex;
-        flex-wrap: wrap;
-        flex-direction: row;
-        flex-basis: 75px;
-        justify-content: center;
-        text-align: center;
-        width: 100%;
-        height: 100px;
-        color: white;
-        font-size: 8px;
-        font-family: 'Ubuntu';
-    }
-
-    div.quickstats-container div.counter-container{
-        width: 200px;
-        height: 120px;
-        margin: 5px 30px;
-        margin-bottom: 0px;
-    }
-
-    div.quickstats-container h1{
-        margin: 8px;
-    }
-
-    div.quickstats-container p{
-        font-size: 45px;
-    }
-
-
-
-    /* End Statistics Styling */
 
 div.content-daily {
     display: none;                  /* Hide by default */
@@ -299,8 +265,8 @@ div.content-tridaily-container {
 }
 div.content-tridaily-event-container {
     position: relative;
-    left: -33.33%;
-    width: 166.67%;
+    left: -200%;
+    width: 500%;
     height: calc(100% - 100px);
     min-height: 300px;
 }
@@ -326,17 +292,18 @@ div.content-tridaily-selection-container {
     box-sizing: border-box;
     padding: 20px;
     align-self: center;
-    left: -33.33%;
-    height: 100px;
-    width: 166.67%;
+    left: -200%;
+    height: 120px;
+    width: 500%;
     color: white;
     user-select: none;
+    font-size: 40px;
 }
 
 div.content-tridaily-selection-member {
     position: absolute;
     width: 20%;
-    height: 60px;
+    height: 80px;
     transition: 500ms;
     transition-timing-function: cubic-bezier(0.37, 0, 0.62, 0.96);
 }
@@ -356,6 +323,8 @@ div.content-tridaily-container img {
 
 div.content-tridaily-container img.date-selection {
     position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
     width: 50px;
     height: 50px;
     z-index: 1;
@@ -367,7 +336,7 @@ div.content-tridaily-container img.date-selection {
         display: flex;
         flex-direction: row;
         box-sizing: border-box;
-        height: 70px;
+        height: 100px;
         left: 5%;
         width: 90%;
         padding: 20px 10px 20px 10px;
@@ -382,22 +351,22 @@ div.content-tridaily-container img.date-selection {
     }
 
     div.event-container .event-member {
-        height: 30px;
-        font-size: 20px;
+        line-height: 50px;
+        font-size: 40px;
     }
 
         /* Checkbox Styling */
         div.event-container .checkbox {
-            width: 30px;
-            height: 30px;
+            width: 50px;
+            height: 50px;
             margin-right: 10px;
         }
 
         div.event-container .checkbox input {
             position: absolute;
             cursor: pointer;
-            height: 30px;
-            width: 30px;
+            height: inherit;
+            width: inherit;
             margin: 0;
             transition: 300ms;
         }
@@ -438,13 +407,14 @@ div.content-tridaily-container img.date-selection {
             padding: 50px;
             border-radius: 15px;
             background-color:#437044;
+            font-size: 30px;
         }
 
         div.elaborate-event-container h1 {
             color: white;
             font-family: 'Nunito';
             margin: 0;
-            font-size: 25px;
+            font-size: 50px;
         }
 
         div.elaborate-event-title {
@@ -463,15 +433,17 @@ div.content-tridaily-container img.date-selection {
             color: white;
         }
 
-        div.elaborate-event-time {
+        div.elaborate-event-container input {
+            width: 200px;
+            font-size: 30px;
         }
 
         img.elaborate-event-closing-button {
             position: absolute;
             top: 10px;
             right: 10px;
-            width: 30px;
-            height: 30px;
+            width: 50px;
+            height: 50px;
             cursor: pointer;
         }
 
@@ -498,13 +470,17 @@ div.content-tridaily-container img.date-selection {
         font-family: 'Nunito', sans-serif;
         color: white;
         margin: 0;
+        font-size: 50px;
+        text-align: center;
     }
 
     div.add-event-form div.form {
         position: relative;
         font-family: 'Nunito', sans-serif;
-        padding: 10px;
+        padding: 12px;
         color: white;
+        text-align: center;
+        font-size: 40px;
     }
 
     div.add-event-form div.form:focus {
@@ -519,7 +495,8 @@ div.content-tridaily-container img.date-selection {
         padding: 10px 0px;
         font-family: 'Ubuntu';
         color: #cf1b1b;
-        font-size: 18px;
+        font-size: 30px;
+        height: auto;
     }
 
     #add_event_reminder, #add_event_recurrence {
@@ -532,6 +509,28 @@ div.content-tridaily-container img.date-selection {
         flex-direction: row; 
         flex-wrap: wrap; 
         align-items: stretch;
+    }
+
+    div.add-event-form div.button-container{
+        position: relative;
+        width: 200px;
+        display: inline-block;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    div.add-event-form label.elaboration{
+        position: absolute;
+        left: 15%;
+        font-size: 50px;
+        color: white;
+        margin: 0;
+        padding: 0;
+    }
+
+    div.add-event-form input {
+        width: 200px;
+        font-size: 30px;            
     }
 
     div.settings-container h1 {

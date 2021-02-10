@@ -41,9 +41,10 @@ function onSignOut() {
 /**
  *  On add_event_button click, open the add event form.
  */
-function OpenAddEventForm() {                                       
+function OpenAddEventForm() {                        
+  document.getElementById("EventForm").style.display = "block";             
   //Move the add_event_form in view;
-  setTimeout(function() {document.getElementById("EventForm").style.transform = "translateY(-100%)";}, 300);
+  document.getElementById("EventForm").style.transform = "translateY(-100%)";
   //Focus the first text element, name;
   document.getElementById("add_event_name").focus({preventScroll:true});
   //Set the opacity of the application to 0.1;
@@ -64,8 +65,9 @@ function closeAddEventForm() {
   //Set the opacity of the application to 1;
   document.getElementById("scheduler-application-container").style.opacity = 1;
   document.getElementById("EventForm").style.transform = "translateY(0)";
-  //Move the add_event_form in view;
-  setTimeout(function() {document.getElementById("EventForm").style.transform = "";}, 300);
+  //Move the add_event_form out of view;
+  document.getElementById("EventForm").style.transform = ""; 
+  document.getElementById("EventForm").style.display = "none";                         
 }
 
 /**

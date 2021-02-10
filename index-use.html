@@ -130,8 +130,8 @@
     <!-- End Application -->
     </div>
 
-    <!-- Add Event Pop-up (Medium Settings) -->
-    <div class="add-event-form" id="EventForm">
+    <!-- Add Event Pop-up -->
+    <div class="add-event-form" id="EventForm" style="display: none;">
       <form action="/action_page.php" class="form-container">
         <h1>Create new event</h1>
         
@@ -259,7 +259,29 @@
           onSignOut();
         });
       }
+
+      const appHeight = () => {
+          const doc = document.documentElement
+          doc.style.setProperty('--app-height', `${window.innerHeight}px`)
+      }
+      window.addEventListener('resize', appHeight)
+      appHeight()
     </script>
+    <style>
+      :root {
+        --app-height: 100%;
+      }
+
+      html,
+      body {
+          padding: 0;
+          margin: 0;
+          overflow: hidden;
+          width: 100vw;
+          height: 100vh;
+          height: var(--app-height);
+      }
+          </style>
 
     <script async defer src="https://apis.google.com/js/api.js"
       onload="this.onload=function(){};handleClientLoad()"

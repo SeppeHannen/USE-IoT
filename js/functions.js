@@ -20,7 +20,7 @@ function onSignIn() {
   refreshDate();
   document.getElementById("login-container").style.display = "none";
   document.getElementById("scheduler-application-container").style.display = "block";
-  synchronizeApplications();
+  //synchronizeApplications();
   updateEventContent(null);
 }
 

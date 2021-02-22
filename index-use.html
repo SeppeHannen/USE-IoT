@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Langar&family=Nunito:wght@200&family=Ubuntu&display=swap&family=Bitter&display=swap" rel="stylesheet">
   </head>
-  <body>
+  <body id="body">
 
     <!-- Scheduler Application Container -->
     <div class="scheduler-application-container" id="scheduler-application-container" onclick="removeAllByClassName('elaborate-event-container'); isEventBeingEdited = false;">
@@ -283,6 +283,48 @@
       }
           </style>
 
+
+    <script>
+      var container = document.getElementById("body");
+      var containerToMove = document.getElementById('content-tridaily-member-2');
+      var clientX;
+      var clientY;
+      var screenWidth = Math.max(
+          document.body.scrollWidth,
+          document.documentElement.scrollWidth,
+          document.body.offsetWidth,
+          document.documentElement.offsetWidth,
+          document.documentElement.clientWidth
+        );
+      container.onmousedown = handleMouseDown;
+      container.onmouseup = handleMouseUp;
+
+      function handleMouseDown(evt) {
+        container.onmousemove = handleDrag;
+        clientX = evt.clientX;
+        clientY = evt.clientY;
+      }
+
+      function handleMouseUp(evt) {
+        container.onmousemove = null;
+      }
+
+      function handleDrag(evt) {
+        var horizontalDistance = evt.clientX - clientX
+        var verticalDistance = evt.clientY - clientY
+        var horizontalDistanceRelative = horizontalDistance/screenWidth*100;
+        var left = ((40 + horizontalDistanceRelative/5).toFixed(2));
+        //containerToMove.style.left = left.toString() + '%';
+        if (left < 30) {
+          container.onmousemove = null;
+          dateSelectionRight();
+        }
+        if (left > 50) {
+          container.onmousemove = null;
+          dateSelectionLeft();
+        }
+      }
+    </script>
     <script async defer src="https://apis.google.com/js/api.js"
       onload="this.onload=function(){};handleClientLoad()"
       onreadystatechange="if (this.readyState === 'complete') this.onload();">

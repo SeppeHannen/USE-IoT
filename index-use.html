@@ -296,31 +296,35 @@
           document.documentElement.offsetWidth,
           document.documentElement.clientWidth
         );
-      container.onmousedown = handleMouseDown;
-      container.onmouseup = handleMouseUp;
+      container.onpointerdown = handleMouseDown;
+      container.onpointerup = handleMouseUp;
 
       function handleMouseDown(evt) {
-        container.onmousemove = handleDrag;
+        evt.preventDefault();
+        container.onpointermove = handleDrag;
         clientX = evt.clientX;
         clientY = evt.clientY;
       }
 
       function handleMouseUp(evt) {
-        container.onmousemove = null;
+        evt.preventDefault();
+        container.onpointermove = null;
       }
 
       function handleDrag(evt) {
+        evt.preventDefault();
         var horizontalDistance = evt.clientX - clientX
         var verticalDistance = evt.clientY - clientY
         var horizontalDistanceRelative = horizontalDistance/screenWidth*100;
         var left = ((40 + horizontalDistanceRelative/5).toFixed(2));
+        console.log(left);
         //containerToMove.style.left = left.toString() + '%';
         if (left < 30) {
-          container.onmousemove = null;
+          container.onpointermove = null;
           dateSelectionRight();
         }
         if (left > 50) {
-          container.onmousemove = null;
+          container.onpointermove = null;
           dateSelectionLeft();
         }
       }

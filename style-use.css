@@ -575,6 +575,7 @@ div.content-calendar {
 /* Login Screen Styling */
 body {
     background-color: #151515;
+    touch-action: none;
 }
 
 div.login-container {

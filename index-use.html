@@ -2,7 +2,7 @@
 <html>
   <head>
     <title>Lumos - Task Manager</title>
-    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" charset="utf-8" />
     <link rel="stylesheet" href="style-use.css">
     <script src="js/gapiHandler.js"></script>
     <script src="js/functions.js"></script>
@@ -300,30 +300,27 @@
       container.onpointerup = handleMouseUp;
 
       function handleMouseDown(evt) {
-        evt.preventDefault();
         container.onpointermove = handleDrag;
         clientX = evt.clientX;
         clientY = evt.clientY;
       }
 
       function handleMouseUp(evt) {
-        evt.preventDefault();
         container.onpointermove = null;
       }
 
       function handleDrag(evt) {
-        evt.preventDefault();
         var horizontalDistance = evt.clientX - clientX
         var verticalDistance = evt.clientY - clientY
         var horizontalDistanceRelative = horizontalDistance/screenWidth*100;
         var left = ((40 + horizontalDistanceRelative/5).toFixed(2));
         console.log(left);
         //containerToMove.style.left = left.toString() + '%';
-        if (left < 30) {
+        if (left < 35) {
           container.onpointermove = null;
           dateSelectionRight();
         }
-        if (left > 50) {
+        if (left > 45) {
           container.onpointermove = null;
           dateSelectionLeft();
         }

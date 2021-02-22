@@ -29,7 +29,7 @@ function addEvent(name, description, dateTimeStart, dateTimeEnd) {
       });
 
       //In case of a succes, do closeAddEventForm() else display the error message.
-      request.then(function(event) {updateEventContent(); closeAddEventForm()}, function(result) {document.getElementById("add_event_error").innerHTML = result.result.error.message});
+      request.then(function(event) {updateEventContent(); closeAddEventForm();}, function(result) {document.getElementById("add_event_error").innerHTML = result.result.error.message});
 }
 
 /**
@@ -42,7 +42,7 @@ function removeEvent(id) {
     'eventId': id
   });
 
-  request.then(function() {markEventComplete(id)});
+  request.then(function() {markEventComplete(id);});
 }
 
 /**
@@ -72,15 +72,13 @@ function getEventDate(date, member) {
 
 /**
  * Makes sure that when event data is changed, the content is updated.
- * May not work properly in Safari as 'service workers' are required, I think..
  */
 // function synchronizeApplications() {
 //   gapi.client.calendar.events.watch({
 //     calendarId: 'primary',
-//     id: 'application',
-//     token: '0000',
+//     id: 'application_use',
 //     type: 'web_hook',
-//     address: "window.location.href"
+//     address: "https://hooks.zapier.com/hooks/catch/5421251/ony7xza/"
 //   }).then(function() {
 //     updateEventContent();
 //   })

@@ -22,6 +22,11 @@ function onSignIn() {
   document.getElementById("scheduler-application-container").style.display = "block";
   //synchronizeApplications();
   updateEventContent(null);
+
+  //Continuously update the event data:
+  var synchronizationInterval = setInterval(function(){
+  updateEventContent(null);
+  }, 300000);
 }
 
 /**
@@ -36,6 +41,7 @@ function onSignOut() {
     document.getElementById("content-tridaily-day-" + i).innerText = "";
     document.getElementById("content-tridaily-date-" + i).innerText = "";
   }
+  clearInterval(synchronizationInterval);
 }
 
 /**
